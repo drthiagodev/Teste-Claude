@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Carteira</title>
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Carteira">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <h1 id="titulo">Resumo</h1>
+    <button id="btn-atualizar" class="icone" aria-label="Atualizar cotações">⟳</button>
+  </header>
+  <p id="status" class="status" role="status"></p>
+
+  <main>
+    <!-- RESUMO -->
+    <section id="tela-resumo" class="tela ativa">
+      <div class="cartao destaque">
+        <span class="rotulo">Patrimônio</span>
+        <strong id="r-total" class="valor-grande">—</strong>
+        <span id="r-dia" class="sub"></span>
+      </div>
+      <div class="grade2">
+        <div class="cartao"><span class="rotulo">Investido</span><strong id="r-investido">—</strong></div>
+        <div class="cartao"><span class="rotulo">Resultado</span><strong id="r-resultado">—</strong></div>
+        <div class="cartao"><span class="rotulo">Proventos</span><strong id="r-proventos">—</strong></div>
+        <div class="cartao"><span class="rotulo">Lucro realizado</span><strong id="r-realizado">—</strong></div>
+      </div>
+      <h2>Alocação</h2>
+      <div id="r-alocacao" class="cartao"></div>
+      <p id="r-cotacao-hora" class="nota"></p>
+    </section>
+
+    <!-- ATIVOS -->
+    <section id="tela-ativos" class="tela">
+      <div id="lista-ativos"></div>
+      <h2>Renda fixa</h2>
+      <div id="lista-rf"></div>
+      <p class="nota">Renda fixa: valor bruto estimado (sem IR e sem feriados no cálculo de dias úteis).</p>
+    </section>
+
+    <!-- LANÇAR -->
+    <section id="tela-lancar" class="tela">
+      <div class="abas" role="tablist">
+        <button class="aba ativa" data-form="form-rv">Ações, FIIs, exterior</button>
+        <button class="aba" data-form="form-rf">Renda fixa</button>
+      </div>
+
+      <form id="form-rv" class="cartao form">
+        <label>Tipo
+          <select name="tipo">
+            <option value="compra">Compra</option>
+            <option value="venda">Venda</option>
+            <option value="provento">Provento</option>
+          </select>
+        </label>
+        <label>Ativo
+          <input name="ativo" list="tickers" required autocapitalize="characters" autocomplete="off" placeholder="ITSA4">
+          <datalist id="tickers"></datalist>
+        </label>
+        <label>Data <input name="data" type="date" required></label>
+        <label class="so-negocio">Quantidade <input name="qtd" type="text" inputmode="decimal" placeholder="100"></label>
+        <label>Valor total em R$ <input name="valor" type="text" inputmode="decimal" required placeholder="1.234,56"></label>
+        <p class="nota so-negocio">Na compra, inclua taxas. Para ativo no exterior, informe quanto custou em reais.</p>
+        <button type="submit" class="primario">Salvar</button>
+      </form>
+
+      <form id="form-rf" class="cartao form" hidden>
+        <label>Nome <input name="nome" required placeholder="CDB Banco X 2028"></label>
+        <label>Indexador
+          <select name="tipo">
+            <option value="cdi">% do CDI (CDB, RDC, LCI…)</option>
+            <option value="pre">Prefixado</option>
+            <option value="ipca">IPCA + taxa</option>
+          </select>
+        </label>
+        <label><span id="rf-taxa-rotulo">% do CDI</span> <input name="taxa" type="text" inputmode="decimal" required placeholder="110"></label>
+        <label>Data da aplicação <input name="data" type="date" required></label>
+        <label>Valor aplicado em R$ <input name="valor" type="text" inputmode="decimal" required placeholder="10.000,00"></label>
+        <label>Vencimento (opcional) <input name="venc" type="date"></label>
+        <button type="submit" class="primario">Salvar</button>
+      </form>
+
+      <h2>Últimos lançamentos</h2>
+      <div id="lista-lanc"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="tela-ajustes" class="tela">
+      <form id="form-config" class="cartao form">
+        <label>Planilha de cotações (link ou ID)
+          <input name="sheet" autocomplete="off" placeholder="https://docs.google.com/spreadsheets/d/…">
+        </label>
+        <p class="nota">A planilha precisa estar compartilhada como “Qualquer pessoa com o link: leitor”. O app lê só as abas Cotações e Índices.</p>
+        <button type="submit" class="primario">Salvar e atualizar</button>
+      </form>
+
+      <h2>Classe de cada ativo</h2>
+      <div id="lista-classes" class="cartao"></div>
+
+      <h2>Backup</h2>
+      <div class="cartao form">
+        <p class="nota">Seus lançamentos ficam só neste aparelho. Exporte um backup de vez em quando.</p>
+        <button id="btn-exportar">Exportar backup</button>
+        <label class="botao">Importar backup <input id="inp-importar" type="file" accept="application/json" hidden></label>
+        <button id="btn-apagar" class="perigo">Apagar todos os dados</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="rodape">
+    <button data-tela="resumo" class="ativa"><span>▦</span>Resumo</button>
+    <button data-tela="ativos"><span>☰</span>Ativos</button>
+    <button data-tela="lancar"><span>＋</span>Lançar</button>
+    <button data-tela="ajustes"><span>⚙</span>Ajustes</button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
