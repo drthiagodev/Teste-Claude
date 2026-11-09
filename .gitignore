@@ -1,0 +1,3 @@
+# Dados pessoais nunca entram no repositório
+*.csv
+carteira-dados*.json

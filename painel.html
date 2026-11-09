@@ -1,0 +1,1314 @@
+<meta name="dash-one-writer">
+<style>
+.cp{display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans)}
+.cp h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.cp .lead{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0}
+.cp .lead b{color:var(--color-fg);font-weight:600}
+.cp .tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--color-border-line)}
+.cp .tabs button{border:0;background:transparent;color:var(--color-fg-muted);font:inherit;padding:8px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.cp .tabs button[aria-selected=true]{color:var(--color-fg);border-bottom-color:var(--color-fg);font-weight:var(--cds-font-weight-medium)}
+.cp .tabs button:focus-visible,.cp button.t:focus-visible{outline:2px solid var(--color-fg-muted);outline-offset:2px}
+.cp section.page{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.cp .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:var(--cds-gap-md)}
+.cp .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);min-width:0}
+.cp .lab{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.cp .big{display:block;font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin:var(--cds-gap-xs) 0}
+.cp .det{font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums;color:var(--color-fg-muted)}
+.cp .up{color:var(--color-ok)} .cp .down{color:var(--color-bad)}
+.cp h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.cp .note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:2px 0 var(--cds-gap-md)}
+.cp .bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--cds-gap-sm);margin-bottom:var(--cds-gap-md)}
+.cp .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cp button.t{border:1px solid var(--color-border-line);background:transparent;color:var(--color-fg-muted);border-radius:999px;padding:4px 11px;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer}
+.cp button.t[aria-pressed=true]{color:var(--color-fg);border-color:var(--color-fg-muted);background:var(--color-bg)}
+.cp select,.cp input[type=search]{font:inherit;font-size:var(--cds-font-size-caption);padding:4px 8px;border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-bg);color:var(--color-fg)}
+.cp .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:var(--cds-gap-md)}
+.cp .chart{position:relative;min-height:240px}
+.cp .chart svg{display:block}
+.cp .tip{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums;min-width:11rem;top:4px;z-index:2}
+.cp .tip .h{color:var(--cds-text-secondary);margin-bottom:2px}
+.cp .tip .l{display:flex;justify-content:space-between;gap:var(--cds-gap-md)}
+.cp .alloc{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);align-items:center}
+.cp .donut{width:160px;height:160px;flex:none}
+.cp .alloc .scroll{flex:1;min-width:15rem}
+.cp table{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
+.cp th{text-align:left;color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium);padding:6px 8px;border-bottom:1px solid var(--color-border-line);white-space:nowrap;background:var(--color-panel);position:sticky;top:0}
+.cp th.s{cursor:pointer;user-select:none}
+.cp td{padding:7px 8px;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.cp tbody tr:last-child td{border-bottom:0}
+.cp .r{text-align:right} .cp .c{text-align:center}
+.cp .scroll{overflow-x:auto}
+.cp .tall{max-height:32rem;overflow:auto}
+.cp tr.clk{cursor:pointer} .cp tr.clk:hover td,.cp tr.clk.on td{background:var(--color-bg)} .cp tr.det-mes>td{padding:4px 8px 12px 24px;background:var(--color-bg)} .cp tr.det-mes th{background:var(--color-bg);position:static}
+.cp .pill{padding:2px 7px;border-radius:999px;background:var(--color-bg);color:var(--color-fg-muted)}
+.cp .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:middle}
+.cp .wbar{display:inline-block;height:6px;border-radius:3px;background:var(--cds-chart-muted);vertical-align:middle;margin-right:6px}
+.cp .pend{margin:0;padding-left:1.2em;font-size:var(--cds-font-size-body);display:flex;flex-direction:column;gap:6px}
+.cp .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr));gap:var(--cds-gap-md);margin-top:var(--cds-gap-md);min-height:3.6rem}
+.cp .cmp > div{border-top:2px solid var(--c);padding-top:6px;font-variant-numeric:tabular-nums}
+.cp .cmp .n{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.cp .cmp .v{font-size:var(--cds-font-size-heading)}
+.cp .cmp .d{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.cp button.t[aria-pressed=false] .sw{opacity:.3}
+.cp button.t:disabled{cursor:default}
+.cp .tipos{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.cp .tipos b{color:var(--color-fg);font-weight:500}
+.cp [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+.cp [data-dash-source-state=empty]{color:transparent}
+</style>
+
+<div class="cp">
+  <header>
+    <h1>Carteira Pessoal</h1>
+    <p class="lead">Patrimônio de <b data-draw="h-pat" data-source="resumo" data-field="patrimonio" data-row="0">—</b>, com resultado de <b data-draw="h-res" data-source="resumo" data-field="resultado_pct" data-row="0">—</b> sobre o custo. Cotações do último fechamento.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Seções">
+    <button role="tab" data-tab="geral" aria-selected="true">Visão geral</button>
+    <button role="tab" data-tab="patrimonio" aria-selected="false">Patrimônio</button>
+    <button role="tab" data-tab="rentabilidade" aria-selected="false">Rentabilidade</button>
+    <button role="tab" data-tab="proventos" aria-selected="false">Proventos</button>
+    <button role="tab" data-tab="transacoes" aria-selected="false">Transações</button>
+    <button role="tab" data-tab="ir" aria-selected="false">IR</button>
+  </nav>
+
+  <!-- VISÃO GERAL -->
+  <section class="page" id="geral">
+    <div class="tiles">
+      <div class="card"><span class="lab">Patrimônio</span><span class="big" data-draw="k-pat" data-source="resumo" data-field="patrimonio" data-row="0" data-fetchpriority="high">—</span><span class="det"><span data-draw="k-n" data-source="resumo" data-field="n_ativos" data-row="0">—</span> ativos</span></div>
+      <div class="card"><span class="lab">Custo de aquisição</span><span class="big" data-draw="k-custo" data-source="resumo" data-field="custo" data-row="0">—</span><span class="det">Pelo preço médio dos lançamentos</span></div>
+      <div class="card"><span class="lab">Resultado</span><span class="big" data-draw="k-res" data-source="resumo" data-field="resultado" data-row="0">—</span><span class="det"><span data-draw="k-resp" data-source="resumo" data-field="resultado_pct" data-row="0">—</span> sobre o custo</span></div>
+      <div class="card"><span class="lab">Proventos, últimos 12 meses</span><span class="big" data-draw="k-prov" data-source="resumo" data-field="proventos_12m" data-row="0">—</span><span class="det">Média de <span data-draw="k-provm" data-source="resumo" data-field="proventos_media_12m" data-row="0">—</span> por mês</span></div>
+    </div>
+    <div class="grid2">
+      <section class="card" id="g-aloc">
+        <h2>Alocação por classe</h2>
+        <p class="note">Peso de cada classe no patrimônio.</p>
+        <div class="alloc">
+          <div class="donut" data-draw="donut" data-source="alocacao"></div>
+          <div class="scroll"><table data-source="alocacao" data-row-key="classe">
+            <thead><tr><th data-field="classe">Classe</th><th class="r" data-field="saldo">Saldo</th><th class="r" data-field="peso">Peso</th></tr></thead>
+            <tbody data-draw="aloc-mini"></tbody>
+          </table></div>
+        </div>
+      </section>
+      <section class="card" id="g-top">
+        <h2>Maiores posições</h2>
+        <p class="note">As dez maiores, pelo saldo.</p>
+        <div class="scroll"><table data-source="posicoes" data-row-key="ativo">
+          <thead><tr><th data-field="ativo">Ativo</th><th class="r" data-field="saldo">Saldo</th><th class="r" data-field="resultado_pct">Resultado</th><th data-field="peso">Peso</th></tr></thead>
+          <tbody data-draw="top10"></tbody>
+        </table></div>
+      </section>
+    </div>
+    <section class="card" id="g-prov">
+      <h2>Proventos por mês</h2>
+      <p class="note">Últimos 12 meses. Detalhes na aba Proventos.</p>
+      <div class="chart" data-draw="g-prov" data-source="proventos_b3 lancamentos"></div>
+    </section>
+    <section class="card" id="g-pend">
+      <h2>Pendências dos dados</h2>
+      <ul class="pend">
+        <li>RDCs do Sicoob aparecem pelo valor atual dos recibos enviados por você; os dois que venceram em 2026 entram com a data de aplicação do seu extrato bancário.</li>
+        <li>Tesouro Direto aparece pelo saldo da corretora em 08/11/2026.</li>
+        <li>Exterior e cripto vêm do Status Invest e ainda não foram conferidos com as corretoras.</li>
+        <li>Proventos do exterior ainda não entraram.</li>
+        <li>Custo de bonificações: ALUP11 (2023–2025) e ITUB3 (2025) conferidos com os fatos relevantes; EGIE3, ITSA3, ITSA4, SHUL4, FLRY3, SOJA3, SULA11 e UNIP6 ainda vêm do Status Invest, porque a B3 não os informa.</li>
+        <li>Preço das subscrições (IRDM11, VRTA11, RBRP11 e outras) vem do Status Invest; falta conferir com os recibos.</li>
+        <li>Cisão Itaú/XP (2021): custo do XPBR31 = 6,607% do custo do ITUB3, fator citado por fontes secundárias; falta o comunicado oficial.</li>
+        <li>Resgate de R$ 1.507,11 na incorporação do IRDM11 pelo IRIM11 tratado como redução de custo; a natureza fiscal (redução de custo ou venda parcial) está a revisar.</li>
+        <li>Preços oficiais da B3 vão até 06/11/2026; depois disso, a rentabilidade usa o Google Finance.</li>
+        <li>Divergências com a declaração de 2026 (EGIE3, VRTA11, ALUP11, ITUB3, SOJA3 e o prejuízo de FII de outubro) ficam para a próxima declaração.</li>
+      </ul>
+    </section>
+  </section>
+
+  <!-- PATRIMÔNIO -->
+  <section class="page" id="patrimonio" hidden>
+    <section class="card" id="p-evol">
+      <h2>Evolução do patrimônio</h2>
+      <p class="note">Patrimônio no fim de cada mês (última sexta), dividido em aporte próprio acumulado (compras menos vendas, descontados os proventos reinvestidos) e rendimento acumulado (valorização mais proventos). Passe o dedo ou o mouse sobre um mês para ver o detalhe.</p>
+      <div class="bar"><div class="grp" role="group" aria-label="Período">
+        <button class="t" data-pper="12" aria-pressed="false">12M</button>
+        <button class="t" data-pper="60" aria-pressed="false">5 anos</button>
+        <button class="t" data-pper="ALL" aria-pressed="true">Tudo</button>
+      </div><span class="det" data-draw="p-evol-leg" data-source="rent_mensal"></span></div>
+      <div class="chart" data-draw="p-evol" data-source="rent_mensal" style="min-height:260px"></div>
+      <div class="scroll" style="max-height:320px"><table data-source="rent_mensal">
+        <thead><tr><th>Mês</th><th class="r">Patrimônio</th><th class="r">Aporte no mês</th><th class="r">Rendimento no mês</th><th class="r">Rentab. no mês</th><th class="r">Aporte acumulado</th><th class="r">Rendimento acumulado</th></tr></thead>
+        <tbody data-draw="p-evol-t"></tbody>
+      </table></div>
+    </section>
+    <section class="card" id="p-classes">
+      <h2>Composição por classe</h2>
+      <p class="note">Saldo, custo e resultado de cada classe.</p>
+      <div class="scroll"><table data-source="alocacao" data-row-key="classe">
+        <thead><tr><th data-field="classe">Classe</th><th class="r" data-field="saldo">Saldo</th><th class="r" data-field="peso">Peso</th><th class="r" data-field="custo">Custo</th><th class="r" data-field="resultado">Resultado</th><th class="r" data-field="resultado_pct">Resultado %</th><th data-field="n">Ativos</th></tr></thead>
+        <tbody data-draw="aloc-full"></tbody>
+      </table></div>
+    </section>
+    <section class="card" id="p-posicoes">
+      <h2>Posições</h2>
+      <p class="note">Toque no título de uma coluna para ordenar. Exterior: preços em US$, saldo e resultado convertidos pelo dólar de hoje.</p>
+      <div class="bar">
+        <div class="grp" role="group" aria-label="Classe">
+          <button class="t" data-cls="" aria-pressed="true">Todas</button>
+          <button class="t" data-cls="Ações" aria-pressed="false">Ações</button>
+          <button class="t" data-cls="FIIs" aria-pressed="false">FIIs</button>
+          <button class="t" data-cls="Tesouro" aria-pressed="false">Tesouro</button>
+          <button class="t" data-cls="Renda fixa" aria-pressed="false">Renda fixa</button>
+          <button class="t" data-cls="Exterior" aria-pressed="false">Exterior</button>
+          <button class="t" data-cls="Cripto" aria-pressed="false">Cripto</button>
+        </div>
+        <input type="search" id="pos-busca" placeholder="Buscar ativo" aria-label="Buscar ativo">
+      </div>
+      <div class="scroll tall"><table data-source="posicoes" data-row-key="ativo" id="pos-table">
+        <thead><tr>
+          <th class="s" data-sort="ativo" data-field="ativo">Ativo</th>
+          <th class="s" data-sort="classe" data-field="classe">Classe</th>
+          <th class="s r" data-sort="qtd" data-field="qtd">Qtd.</th>
+          <th class="s r" data-sort="pm" data-field="pm">Preço médio</th>
+          <th class="s r" data-sort="preco" data-field="preco">Preço atual</th>
+          <th class="s r" data-sort="saldo" data-field="saldo">Saldo</th>
+          <th class="s r" data-sort="custo_brl" data-field="custo_brl">Custo</th>
+          <th class="s r" data-sort="resultado" data-field="resultado">Resultado</th>
+          <th class="s r" data-sort="resultado_pct" data-field="resultado_pct">Resultado %</th>
+          <th class="s" data-sort="peso" data-field="peso">Peso</th>
+          <th data-field="fonte_preco">Preço por</th>
+        </tr></thead>
+        <tbody data-draw="pos"></tbody>
+      </table></div>
+    </section>
+  </section>
+
+  <!-- RENTABILIDADE -->
+  <section class="page" id="rentabilidade" hidden>
+    <section class="card" id="r-ativos">
+      <h2>Retorno por ativo</h2>
+      <p class="note">Valorização sobre o custo e proventos recebidos pelo ativo. Retorno total = (resultado + proventos) ÷ custo.</p>
+      <div class="scroll tall"><table data-source="retorno" data-row-key="ativo" id="ret-table">
+        <thead><tr><th class="s" data-rsort="ativo" data-field="ativo">Ativo</th><th class="s" data-rsort="classe" data-field="classe">Classe</th><th class="s r" data-rsort="custo_brl" data-field="custo_brl">Custo</th><th class="s r" data-rsort="resultado" data-field="resultado">Valorização</th><th class="s r" data-rsort="proventos" data-field="proventos">Proventos</th><th class="s r" data-rsort="retorno_total" data-field="retorno_total">Retorno total</th><th class="s r" data-rsort="retorno_total_pct" data-field="retorno_total_pct">Retorno total %</th></tr></thead>
+        <tbody data-draw="ret"></tbody>
+      </table></div>
+    </section>
+    <section class="card" id="r-hist">
+      <h2>Carteira contra índices</h2>
+      <p class="note">Rentabilidade acumulada semana a semana pelo método de cotas: aportes e vendas não contam como ganho, e os proventos recebidos contam. Clique e arraste no gráfico para ver a rentabilidade entre duas datas.</p>
+      <div class="bar">
+        <div class="grp" role="group" aria-label="Índices">
+          <button class="t" data-ser="carteira" aria-pressed="true" disabled><i class="sw" data-sw="0"></i>Carteira</button>
+          <button class="t" data-ser="ibov" aria-pressed="true"><i class="sw" data-sw="1"></i>Ibovespa</button>
+          <button class="t" data-ser="ipca6" aria-pressed="true"><i class="sw" data-sw="2"></i>IPCA + 6%</button>
+          <button class="t" data-ser="ipca" aria-pressed="false"><i class="sw" data-sw="6"></i>IPCA</button>
+          <button class="t" data-ser="selic" aria-pressed="false"><i class="sw" data-sw="3"></i>Selic (≈ CDI)</button>
+          <button class="t" data-ser="spx" aria-pressed="false"><i class="sw" data-sw="4"></i>S&amp;P 500</button>
+          <button class="t" data-ser="usd" aria-pressed="false"><i class="sw" data-sw="5"></i>Dólar</button>
+          <button class="t" data-ser="m2" aria-pressed="false"><i class="sw" data-sw="m"></i>M2</button>
+        </div>
+        <div class="grp">
+          <div class="grp" role="group" aria-label="Moeda"><button class="t" data-moeda="BRL" aria-pressed="true">R$</button><button class="t" data-moeda="USD" aria-pressed="false">US$</button><button class="t" data-moeda="REAL" aria-pressed="false">Deflacionado</button></div>
+          <div class="grp" role="group" aria-label="Período">
+            <button class="t" data-rper="3" aria-pressed="false">3M</button>
+            <button class="t" data-rper="YTD" aria-pressed="false">No ano</button>
+            <button class="t" data-rper="12" aria-pressed="true">12M</button>
+            <button class="t" data-rper="60" aria-pressed="false">5 anos</button>
+            <button class="t" data-rper="ALL" aria-pressed="false">Tudo</button>
+          </div>
+        </div>
+      </div>
+      <div class="bar"><div class="grp"><i class="sw" data-sw="7"></i><input type="search" id="r-ativo" list="r-ativos" placeholder="Comparar com um ativo (ex.: ITUB3)" aria-label="Comparar com um ativo"><datalist id="r-ativos" data-draw="r-ativos" data-source="precos_semanais_1 precos_semanais_2"></datalist></div><span class="det" data-draw="r-ativo-msg" data-source="precos_semanais_1 precos_semanais_2">—</span></div>
+      <div class="chart" data-draw="r-linha" data-source="rent_mensal precos_semanais_1 precos_semanais_2" style="min-height:300px"></div>
+      <div class="bar" style="margin:var(--cds-gap-sm) 0 0"><span class="det" data-draw="r-sel" data-source="rent_mensal">—</span><button class="t" id="r-limpa" aria-pressed="true" hidden>Limpar seleção ×</button></div>
+      <div class="cmp" data-draw="r-cmp" data-source="rent_mensal"></div>
+      <p class="det">Em US$, cada série é convertida pelo dólar de cada semana, e o dólar sai da comparação. M2 é o saldo dos meios de pagamento amplos (Banco Central, série 27810), interpolado entre os fins de mês e mantido no último dado publicado. Deflacionado desconta o IPCA de cada série (rentabilidade real), e o IPCA sai da comparação. O ativo comparado mostra só a variação de preço (Google Finance, ajustado por desdobramentos), sem proventos. Tesouro entra pela curva implícita entre o valor aplicado e o saldo da corretora em 08/11/2026; RDCs do Sicoob pela curva até o valor atual do recibo; exterior e cripto pelos dados do Status Invest. Ações e FIIs usam o preço oficial da B3 (arquivos COTAHIST de 2019 a 2022 e 2024); nos demais anos, o Google Finance, com o ajuste de desdobramentos desfeito; sem nenhum dos dois, o preço da última operação.</p>
+    </section>
+    <section class="card" id="r-mes">
+      <h2>Rentabilidade mês a mês</h2>
+      <p class="note">Carteira, em %, com o ano fechado e o Ibovespa do mesmo ano.</p>
+      <div class="scroll"><table data-draw="r-heat" data-source="rent_mensal"></table></div>
+    </section>
+  </section>
+
+  <!-- PROVENTOS -->
+  <section class="page" id="proventos" hidden>
+    <div class="bar card">
+      <div class="grp" role="group" aria-label="Período">
+        <button class="t" data-per="12M" aria-pressed="true">Últimos 12 meses</button>
+        <button class="t" data-per="YTD" aria-pressed="false">No ano</button>
+        <button class="t" data-per="ANO" aria-pressed="false">Ano:</button>
+        <select data-draw="anos" data-source="proventos_b3" aria-label="Ano"></select>
+        <button class="t" data-per="ALL" aria-pressed="false">Tudo</button>
+      </div>
+      <span class="det" data-draw="per-label" data-source="proventos_b3">—</span>
+    </div>
+    <div class="tiles">
+      <div class="card"><span class="lab">Recebido no período</span><span class="big" data-draw="pv-total" data-source="proventos_b3">—</span><span class="det">Média mensal: <span data-draw="pv-media" data-source="proventos_b3">—</span></span></div>
+      <div class="card"><span class="lab">A receber</span><span class="big" data-draw="pv-receber" data-source="provisionados">—</span><span class="det">Provisionado na corretora em 08/11/2026, bruto</span></div>
+      <div class="card"><span class="lab">Por tipo, no período</span><div class="tipos" data-draw="pv-tipos" data-source="proventos_b3">—</div></div>
+    </div>
+    <section class="card" id="pv-mensal">
+      <h2>Proventos por mês</h2>
+      <p class="note">Cada barra soma ações (base) e FIIs (topo). Passe o dedo ou o mouse para ver quem pagou; toque para filtrar o histórico por aquele mês.</p>
+      <div class="chart" data-draw="pv-bars" data-source="proventos_b3 lancamentos"></div>
+    </section>
+    <section class="card" id="pv-calor">
+      <h2>Mês a mês</h2>
+      <p class="note">Total recebido em cada mês, com total e média de cada ano.</p>
+      <div class="scroll"><table data-draw="pv-heat" data-source="proventos_b3"></table></div>
+    </section>
+    <section class="card" id="pv-ativos">
+      <h2>Por ativo</h2>
+      <p class="note">DY: proventos por cota nos últimos 12 meses ÷ cotação atual. YoC: os mesmos proventos ÷ preço médio. Total no período segue o seletor acima. Ativos já vendidos saem desta lista, mas seus pagamentos continuam no histórico abaixo.</p>
+      <div class="scroll tall"><table data-source="prov_ativo" data-row-key="ativo">
+        <thead><tr><th data-field="ativo">Ativo</th><th data-field="classe">Classe</th><th class="r" data-field="qtd">Qtd.</th><th class="r" data-field="dy">DY</th><th class="r" data-field="yoc">YoC</th><th class="r" data-field="ultimo_valor">Último provento</th><th data-field="ultima_data">Data</th><th class="r">Total no período</th><th class="r" data-field="total_acumulado">Total acumulado</th><th class="r" data-field="a_receber">A receber</th></tr></thead>
+        <tbody data-draw="pv-ativo"></tbody>
+      </table></div>
+    </section>
+    <section class="card" id="pv-hist">
+      <h2>Histórico de proventos</h2>
+      <p class="note">Cada pagamento como registrado pela B3 (antes de 11/2019, pelo extrato da Clear), com a quantidade que você tinha e o valor por cota. No JCP, o total é o líquido creditado e o valor por cota é o bruto.</p>
+      <div class="bar">
+        <div class="grp" role="group" aria-label="Tipo">
+          <button class="t" data-tipo="" aria-pressed="true">Todos</button>
+          <button class="t" data-tipo="Dividendo" aria-pressed="false">Dividendos</button>
+          <button class="t" data-tipo="JCP" aria-pressed="false">JCP</button>
+          <button class="t" data-tipo="Rendimento" aria-pressed="false">Rendimentos</button>
+        </div>
+        <div class="grp">
+          <button class="t" id="pv-mes-limpa" aria-pressed="true" hidden><span data-draw="mes-label" data-source="proventos_b3">—</span> ×</button>
+          <input type="search" id="pv-busca" placeholder="Buscar ativo" aria-label="Buscar ativo">
+        </div>
+      </div>
+      <div class="scroll tall" data-source="proventos_b3"><table>
+        <thead><tr><th>Pagamento</th><th>Ativo</th><th>Tipo</th><th class="r">Qtd.</th><th class="r">Valor por cota</th><th class="r">Total</th></tr></thead>
+        <tbody data-draw="pv-hist"></tbody>
+      </table></div>
+      <p class="det" data-draw="pv-hist-n" data-source="proventos_b3">—</p>
+    </section>
+  </section>
+
+  <!-- TRANSAÇÕES -->
+  <section class="page" id="transacoes" hidden>
+    <section class="card" id="t-lista">
+      <h2>Transações</h2>
+      <p class="note">Todas as compras, vendas e eventos, como no livro de lançamentos. A coluna Fonte diz de onde veio cada linha.</p>
+      <div class="bar">
+        <div class="grp">
+          <select id="t-cat" aria-label="Classe"><option value="">Todas as classes</option><option>Ações</option><option>FIIs</option><option>BDR</option><option>Tesouro</option><option>Renda fixa</option><option>Stocks</option><option>REITS</option><option>ETF Exterior</option><option>Criptomoedas</option><option>Direitos</option></select>
+          <select id="t-ord" aria-label="Operação"><option value="">Todas as operações</option><option>Compra</option><option>Venda</option><option>Bonificação</option><option>Desdobro</option><option>Incorporação</option><option>Conversão (E)</option><option>Conversão (S)</option><option>Restituição de capital</option></select>
+          <select data-draw="t-anos" data-source="lancamentos" aria-label="Ano"></select>
+        </div>
+        <input type="search" id="t-busca" placeholder="Buscar ativo" aria-label="Buscar ativo">
+      </div>
+      <div class="scroll tall"><table data-source="lancamentos" data-row-key="seq">
+        <thead><tr><th data-field="seq">Nº</th><th data-field="data">Data</th><th data-field="categoria">Classe</th><th data-field="ativo">Ativo</th><th data-field="ordem">Operação</th><th data-field="corretora">Corretora</th><th class="r" data-field="quantidade">Qtd.</th><th class="r" data-field="preco">Preço</th><th class="r" data-field="total">Total</th><th data-field="fonte">Fonte</th></tr></thead>
+        <tbody data-draw="t-rows"></tbody>
+      </table></div>
+      <p class="det" data-draw="t-n" data-source="lancamentos">—</p>
+    </section>
+  </section>
+
+  <!-- IR -->
+  <section class="page" id="ir" hidden>
+    <section class="card" id="ir-vendas">
+      <h2>Vendas por mês e limite de isenção</h2>
+      <p class="note">Vendas de ações no mercado à vista até R$ 20.000 no mês têm ganho isento. FIIs, BDRs e direitos não entram no limite: o ganho é tributado em qualquer valor. Ganho pelo preço médio dos lançamentos. Day trade (compra e venda do mesmo ativo no mesmo dia e corretora) fica fora do preço médio e do limite de isenção, em colunas próprias. Corretagem e taxas entram onde há nota de corretagem (2019). Clique num mês para ver as movimentações dele.</p>
+      <div class="bar"><div class="grp"><select data-draw="ir-anos" data-source="ir_vendas" aria-label="Ano"></select></div></div>
+      <div class="scroll tall"><table data-source="ir_vendas" data-row-key="mes">
+        <thead><tr><th data-field="mes">Mês</th><th class="r" data-field="vendas_acoes">Vendas de ações</th><th class="r" data-field="folga">Folga até R$ 20 mil</th><th class="r" data-field="ganho_acoes">Ganho em ações</th><th data-field="situacao">Situação</th><th class="r" data-field="vendas_fii">Vendas de FIIs</th><th class="r" data-field="ganho_fii">Ganho em FIIs</th><th class="r" data-field="vendas_outros">Outras vendas</th><th class="r" data-field="ganho_outros">Ganho em outras</th><th class="r" data-field="vendas_dt">Vendas day trade</th><th class="r" data-field="ganho_dt">Ganho day trade</th></tr></thead>
+        <tbody data-draw="ir-v" data-source="ir_vendas lancamentos"></tbody>
+      </table></div>
+    </section>
+    <section class="card" id="ir-pm">
+      <h2>Preço médio: 31/12/2025 e hoje</h2>
+      <p class="note">Custo de aquisição pelos lançamentos, na data da última declaração e agora. Exterior e cripto ficam para depois, porque usam o dólar PTAX de cada compra.</p>
+      <div class="scroll tall"><table data-source="ir_pm" data-row-key="ativo">
+        <thead><tr><th data-field="ativo">Ativo</th><th data-field="classe">Classe</th><th class="r" data-field="qtd_2025">Qtd. 31/12/2025</th><th class="r" data-field="pm_2025">PM 31/12/2025</th><th class="r" data-field="custo_2025">Custo 31/12/2025</th><th class="r" data-field="qtd_atual">Qtd. hoje</th><th class="r" data-field="pm_atual">PM hoje</th><th class="r" data-field="custo_atual">Custo hoje</th><th class="r" data-field="var_pm">Variação do PM</th></tr></thead>
+        <tbody data-draw="ir-p"></tbody>
+      </table></div>
+    </section>
+    <section class="card">
+      <h2>Ainda por vir</h2>
+      <p class="note">Bens e direitos em 31/12 no formato da declaração, rendimentos isentos e de tributação exclusiva por fonte pagadora, e exterior com PTAX. Não sou contador: confira os números antes de declarar.</p>
+    </section>
+  </section>
+</div>
+
+<script>
+window.CP = {ativo: '', sel: null, rper: '12', moeda: 'BRL', on: {carteira: true, ibov: true, ipca6: true, ipca: false, selic: false, spx: false, usd: false, m2: false}, rs: 'retorno_total', rd: -1, tano: '', tcat: '', tord: '', tq: '', iano: '', tab: 'geral', cls: '', q: '', sort: 'saldo', dir: -1, per: '12M', ano: null, tipo: '', pq: '', mes: null};
+window.CPF = {
+  brl: (v) => v == null || isNaN(v) ? '—' : v.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}),
+  usd: (v) => v == null || isNaN(v) ? '—' : 'US$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}),
+  pct: (v, d = 2, s = true) => v == null || isNaN(v) ? '—' : (s && v >= 0 ? '+' : '') + (v * 100).toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d}) + '%',
+  num: (v, d = 2) => v == null || isNaN(v) ? '—' : v.toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d}),
+  qtd: (v) => v.toLocaleString('pt-BR', {maximumFractionDigits: 8}),
+  cls: (v) => (v >= 0 ? 'up' : 'down'),
+  dt: (s) => s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : '—',
+  MES: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+  CORES: {'Ações': 0, 'FIIs': 1, 'Tesouro': 2, 'Renda fixa': 3, 'Exterior': 4, 'Cripto': 5},
+};
+
+dash.loader('cotacoes', {
+  description: 'Linhas da aba Cotações da planilha, com os números do formato brasileiro convertidos.',
+  fn: ({answer}) => {
+    let a = answer;
+    if (typeof a === 'string') a = JSON.parse(a);
+    if (a && a.structuredContent) a = a.structuredContent;
+    const v = (a && a.values) || [];
+    if (!v.length) throw new Error('A planilha não devolveu linhas.');
+    const num = (s) => { if (s == null || s === '') return null; const n = Number(String(s).replace(/\./g, '').replace(',', '.')); return isNaN(n) ? null : n; };
+    return v.slice(1).filter((r) => r[0]).map((r) => ({ativo: r[0], codigo: r[1] || '', moeda: r[2] || '', preco: num(r[3]), preco_brl: num(r[5]), hora: r[6] || ''}));
+  },
+});
+
+dash.calc('posicoes', {
+  title: 'Posições atuais',
+  description: 'Quantidade e custo médio pelos lançamentos; preço pela cotação, pelo saldo da corretora em 08/11/2026 (Tesouro e ativos sem cotação) ou pelo valor atual do recibo do Sicoob (RDCs).',
+  inputs: ['lancamentos', 'cotacoes', 'posicao_corretora', 'renda_fixa_bancos'],
+  fn: (lancamentos, cotacoes, posicao_corretora, renda_fixa_bancos) => {
+    // day trade (compra e venda do mesmo ativo, no mesmo dia e na mesma corretora): a parte casada sai do preço médio
+    const DTG = {}, DTR = [];
+    lancamentos.forEach((l) => { if (l.ordem !== 'Compra' && l.ordem !== 'Venda') return; const k = l.data + '|' + l.ativo + '|' + l.corretora; const g = DTG[k] || (DTG[k] = {c: 0, v: 0}); g[l.ordem === 'Compra' ? 'c' : 'v'] += +l.quantidade; });
+    lancamentos = lancamentos.map((l) => {
+      const g = (l.ordem === 'Compra' || l.ordem === 'Venda') && DTG[l.data + '|' + l.ativo + '|' + l.corretora];
+      if (!g || !g.c || !g.v) return l;
+      const lado = l.ordem === 'Compra' ? g.c : g.v, f = 1 - Math.min(g.c, g.v) / lado, tx = +l.taxas || 0;
+      DTR.push({mes: l.data.slice(0, 7), venda: l.ordem === 'Venda' ? (+l.total) * (1 - f) : 0, ganho: (l.ordem === 'Venda' ? +l.total - tx : -(+l.total + tx)) * (1 - f)});
+      return f < 1e-9 ? null : {...l, quantidade: +l.quantidade * f, total: +l.total * f, taxas: tx * f};
+    }).filter(Boolean);
+    const CL = {'Ações': 'Ações', 'BDR': 'Ações', 'FIIs': 'FIIs', 'Tesouro': 'Tesouro', 'Renda fixa': 'Renda fixa', 'Stocks': 'Exterior', 'REITS': 'Exterior', 'ETF Exterior': 'Exterior', 'Criptomoedas': 'Cripto'};
+    const ENT = ['Compra', 'Bonificação', 'Desdobro', 'Incorporação', 'Cisão', 'Ajuste', 'Conversão (E)'], SAI = ['Venda', 'Conversão (S)'];
+    const ALIAS = {'RAIZ55': 'RAIZ4', 'NTN-B1 dez/2084': 'TESOURO RENDA+ APOSENTADORIA EXTRA 2065', 'NTNB PRINC mai/2029': 'TESOURO IPCA+ 2029', 'LFT mar/2027': 'TESOURO SELIC 2027', 'LFT mar/2031': 'TESOURO SELIC 2031', 'LTN jan/2027': 'TESOURO PREFIXADO 2027', 'LTN jan/2031': 'TESOURO PREFIXADO 2031', 'LTN jan/2032': 'TESOURO PREFIXADO 2032'};
+    const p = {};
+    let conv = 0;
+    lancamentos.slice().sort((a, b) => +a.seq - +b.seq).forEach((l) => {
+      const c = CL[l.categoria];
+      if (!c) return;
+      const q = +l.quantidade, t = +l.total;
+      const x = p[l.ativo] || (p[l.ativo] = {ativo: l.ativo, classe: c, moeda: c === 'Exterior' ? 'USD' : 'BRL', qtd: 0, custo: 0});
+      if (SAI.includes(l.ordem)) {
+        const sai = x.qtd ? x.custo / x.qtd * q : 0;
+        x.qtd -= q; x.custo -= sai;
+        if (l.ordem === 'Conversão (S)') conv = sai;
+        if (x.qtd < 1e-6) { x.qtd = 0; x.custo = 0; }
+      } else if (l.ordem === 'Restituição de capital') { x.custo -= t; } else if (ENT.includes(l.ordem)) {
+        x.qtd += q; x.custo += l.ordem === 'Conversão (E)' ? conv : t + (+l.taxas || 0);
+      }
+    });
+    const cot = {};
+    cotacoes.forEach((r) => { cot[r.ativo] = r; });
+    const fx = cot.USDBRL ? cot.USDBRL.preco : null;
+    const cor = {};
+    posicao_corretora.forEach((r) => { cor[ALIAS[r.ativo] || r.ativo] = r; });
+    const rows = Object.values(p).filter((x) => x.qtd > 1e-6).map((x) => {
+      const pm = x.custo / x.qtd;
+      let preco = null, fonte = '';
+      const k = cot[x.ativo], b = cor[x.ativo];
+      if (x.classe === 'Tesouro' && b) { preco = +b.saldo / +b.quantidade; fonte = 'Corretora 08/11/2026'; }
+      else if (x.classe === 'Renda fixa') { const rb = renda_fixa_bancos.find((r) => r.ativo === x.ativo); preco = rb ? +rb.valor_atual : pm; fonte = rb ? 'Recibo Sicoob' : 'Valor aplicado'; }
+      else if (k && k.preco != null) { preco = k.preco; fonte = 'Cotação ' + (k.hora ? k.hora.slice(8, 10) + '/' + k.hora.slice(5, 7) : ''); }
+      else if (b) { preco = +b.saldo / +b.quantidade; fonte = 'Corretora 08/11/2026'; }
+      const f = x.moeda === 'USD' ? fx : 1;
+      const saldo = preco == null || f == null ? null : x.qtd * preco * f;
+      const custo_brl = f == null ? null : x.custo * f;
+      return {ativo: x.ativo, classe: x.classe, moeda: x.moeda, qtd: x.qtd, pm, preco, saldo, custo_brl, resultado: saldo == null ? null : saldo - custo_brl, resultado_pct: preco == null ? null : preco / pm - 1, fonte_preco: fonte};
+    });
+    const tot = rows.reduce((s, r) => s + (r.saldo || 0), 0);
+    rows.forEach((r) => { r.peso = r.saldo == null ? null : r.saldo / tot; });
+    return rows;
+  },
+});
+
+dash.calc('alocacao', {
+  title: 'Alocação por classe',
+  description: 'Soma das posições por classe: saldo, peso, custo e resultado.',
+  inputs: ['posicoes'],
+  fn: (posicoes) => {
+    const ord = ['Ações', 'FIIs', 'Tesouro', 'Renda fixa', 'Exterior', 'Cripto'];
+    const by = {};
+    let tot = 0;
+    posicoes.forEach((r) => {
+      const x = by[r.classe] || (by[r.classe] = {classe: r.classe, saldo: 0, custo: 0, n: 0});
+      x.saldo += r.saldo || 0; x.custo += r.custo_brl || 0; x.n += 1; tot += r.saldo || 0;
+    });
+    return ord.filter((c) => by[c]).map((c) => { const x = by[c]; return {...x, peso: x.saldo / tot, resultado: x.saldo - x.custo, resultado_pct: x.saldo / x.custo - 1}; });
+  },
+});
+
+dash.calc('resumo', {
+  title: 'Resumo da carteira',
+  description: 'Totais das posições e proventos dos 12 meses até o último pagamento registrado.',
+  inputs: ['posicoes', 'proventos_b3'],
+  fn: (posicoes, proventos_b3) => {
+    const pat = posicoes.reduce((s, r) => s + (r.saldo || 0), 0), custo = posicoes.reduce((s, r) => s + (r.custo_brl || 0), 0);
+    const ref = proventos_b3.reduce((m, r) => (r.data > m ? r.data : m), '');
+    const ini = (+ref.slice(0, 4) - 1) + ref.slice(4, 7) + '-31';
+    const p12 = proventos_b3.filter((r) => r.data > ini && r.tipo !== 'Restituição de capital').reduce((s, r) => s + +r.valor, 0);
+    return [{patrimonio: pat, custo, resultado: pat - custo, resultado_pct: pat / custo - 1, proventos_12m: p12, proventos_media_12m: p12 / 12, n_ativos: posicoes.length}];
+  },
+});
+
+dash.calc('prov_ativo', {
+  title: 'Proventos por ativo',
+  description: 'Para cada ativo em carteira ou que já pagou proventos (mesmo se vendido depois): DY e YoC pelos proventos por cota dos últimos 12 meses, último provento, total acumulado e valor a receber.',
+  inputs: ['proventos_b3', 'posicoes', 'provisionados', 'lancamentos'],
+  fn: (proventos_b3, posicoes, provisionados, lancamentos) => {
+    const ref = proventos_b3.reduce((m, r) => (r.data > m ? r.data : m), '');
+    const ini = (+ref.slice(0, 4) - 1) + ref.slice(4, 7) + '-31';
+    const by = {};
+    proventos_b3.forEach((r) => {
+      if (r.tipo === 'Restituição de capital') return;
+      const x = by[r.ativo] || (by[r.ativo] = {tot: 0, u12: 0, ult: null});
+      x.tot += +r.valor;
+      if (r.data > ini) x.u12 += +r.valor_unitario;
+      if (!x.ult || r.data >= x.ult.data) x.ult = r;
+    });
+    const rec = {};
+    provisionados.forEach((r) => { rec[r.ativo] = (rec[r.ativo] || 0) + +r.valor_bruto; });
+    const out = posicoes.filter((p) => p.classe === 'Ações' || p.classe === 'FIIs').map((p) => {
+      const x = by[p.ativo] || {tot: 0, u12: 0, ult: null};
+      return {ativo: p.ativo, classe: p.classe, qtd: p.qtd, dy: p.preco ? x.u12 / p.preco : null, yoc: p.pm ? x.u12 / p.pm : null,
+        ultimo_valor: x.ult ? +x.ult.valor : null, ultima_data: x.ult ? x.ult.data : '', total_acumulado: x.tot, a_receber: rec[p.ativo] || 0};
+    });
+    return out;
+  },
+});
+
+dash.calc('retorno', {
+  title: 'Retorno por ativo',
+  description: 'Resultado sobre o custo somado aos proventos recebidos pelo ativo desde 11/2019.',
+  inputs: ['posicoes', 'proventos_b3'],
+  fn: (posicoes, proventos_b3) => {
+    const pv = {};
+    proventos_b3.forEach((r) => { pv[r.ativo] = (pv[r.ativo] || 0) + +r.valor; });
+    return posicoes.filter((p) => p.resultado != null).map((p) => {
+      const prov = pv[p.ativo] || 0, rt = p.resultado + prov;
+      return {ativo: p.ativo, classe: p.classe, custo_brl: p.custo_brl, resultado: p.resultado, proventos: prov, retorno_total: rt, retorno_total_pct: rt / p.custo_brl};
+    });
+  },
+});
+
+dash.calc('ir_vendas', {
+  title: 'Vendas e ganhos por mês',
+  description: 'Para cada mês com venda: total vendido e ganho pelo preço médio, separados em ações (limite de R$ 20 mil), FIIs e outros.',
+  inputs: ['lancamentos'],
+  fn: (lancamentos) => {
+    // day trade (compra e venda do mesmo ativo, no mesmo dia e na mesma corretora): a parte casada sai do preço médio
+    const DTG = {}, DTR = [];
+    lancamentos.forEach((l) => { if (l.ordem !== 'Compra' && l.ordem !== 'Venda') return; const k = l.data + '|' + l.ativo + '|' + l.corretora; const g = DTG[k] || (DTG[k] = {c: 0, v: 0}); g[l.ordem === 'Compra' ? 'c' : 'v'] += +l.quantidade; });
+    lancamentos = lancamentos.map((l) => {
+      const g = (l.ordem === 'Compra' || l.ordem === 'Venda') && DTG[l.data + '|' + l.ativo + '|' + l.corretora];
+      if (!g || !g.c || !g.v) return l;
+      const lado = l.ordem === 'Compra' ? g.c : g.v, f = 1 - Math.min(g.c, g.v) / lado, tx = +l.taxas || 0;
+      DTR.push({mes: l.data.slice(0, 7), venda: l.ordem === 'Venda' ? (+l.total) * (1 - f) : 0, ganho: (l.ordem === 'Venda' ? +l.total - tx : -(+l.total + tx)) * (1 - f)});
+      return f < 1e-9 ? null : {...l, quantidade: +l.quantidade * f, total: +l.total * f, taxas: tx * f};
+    }).filter(Boolean);
+    const ENT = ['Compra', 'Bonificação', 'Desdobro', 'Incorporação', 'Cisão', 'Ajuste', 'Conversão (E)'];
+    const p = {}, m = {};
+    let conv = 0;
+    lancamentos.slice().sort((a, b) => +a.seq - +b.seq).forEach((l) => {
+      const q = +l.quantidade, t = +l.total;
+      const x = p[l.ativo] || (p[l.ativo] = {qtd: 0, custo: 0});
+      if (l.ordem === 'Venda' || l.ordem === 'Conversão (S)') {
+        const custo = x.qtd ? x.custo / x.qtd * q : 0;
+        x.qtd -= q; x.custo -= custo;
+        if (x.qtd < 1e-6) { x.qtd = 0; x.custo = 0; }
+        if (l.ordem === 'Conversão (S)') { conv = custo; return; }
+        if (['Stocks', 'REITS', 'ETF Exterior', 'Criptomoedas', 'Tesouro', 'Renda fixa'].includes(l.categoria)) return;
+        const k = l.data.slice(0, 7), y = m[k] || (m[k] = {mes: k, vendas_acoes: 0, ganho_acoes: 0, vendas_fii: 0, ganho_fii: 0, vendas_outros: 0, ganho_outros: 0, vendas_dt: 0, ganho_dt: 0});
+        const g = l.categoria === 'Ações' ? 'acoes' : l.categoria === 'FIIs' ? 'fii' : 'outros';
+        y['vendas_' + g] += t; y['ganho_' + g] += t - (+l.taxas || 0) - custo;
+      } else if (l.ordem === 'Restituição de capital') { x.custo -= t; } else if (ENT.includes(l.ordem)) {
+        x.qtd += q; x.custo += l.ordem === 'Conversão (E)' ? conv : t + (+l.taxas || 0);
+      }
+    });
+    DTR.forEach((d) => { const y = m[d.mes] || (m[d.mes] = {mes: d.mes, vendas_acoes: 0, ganho_acoes: 0, vendas_fii: 0, ganho_fii: 0, vendas_outros: 0, ganho_outros: 0, vendas_dt: 0, ganho_dt: 0}); y.vendas_dt += d.venda; y.ganho_dt += d.ganho; });
+    return Object.values(m).sort((a, b) => (a.mes < b.mes ? 1 : -1)).map((y) => ({...y, folga: 20000 - y.vendas_acoes,
+      situacao: y.ganho_dt > 0.005 ? 'Tributável (day trade)' : y.vendas_acoes === 0 ? (y.vendas_dt ? 'Só day trade' : 'Sem venda de ações') : y.vendas_acoes <= 20000 ? 'Isento' : (y.ganho_acoes > 0 ? 'Tributável' : 'Acima do limite, sem ganho')}));
+  },
+});
+
+dash.calc('ir_pm', {
+  title: 'Preço médio em 31/12/2025 e hoje',
+  description: 'Quantidade, preço médio e custo de cada ativo brasileiro pelos lançamentos, até 31/12/2025 e até hoje.',
+  inputs: ['lancamentos'],
+  fn: (lancamentos) => {
+    // day trade (compra e venda do mesmo ativo, no mesmo dia e na mesma corretora): a parte casada sai do preço médio
+    const DTG = {}, DTR = [];
+    lancamentos.forEach((l) => { if (l.ordem !== 'Compra' && l.ordem !== 'Venda') return; const k = l.data + '|' + l.ativo + '|' + l.corretora; const g = DTG[k] || (DTG[k] = {c: 0, v: 0}); g[l.ordem === 'Compra' ? 'c' : 'v'] += +l.quantidade; });
+    lancamentos = lancamentos.map((l) => {
+      const g = (l.ordem === 'Compra' || l.ordem === 'Venda') && DTG[l.data + '|' + l.ativo + '|' + l.corretora];
+      if (!g || !g.c || !g.v) return l;
+      const lado = l.ordem === 'Compra' ? g.c : g.v, f = 1 - Math.min(g.c, g.v) / lado, tx = +l.taxas || 0;
+      DTR.push({mes: l.data.slice(0, 7), venda: l.ordem === 'Venda' ? (+l.total) * (1 - f) : 0, ganho: (l.ordem === 'Venda' ? +l.total - tx : -(+l.total + tx)) * (1 - f)});
+      return f < 1e-9 ? null : {...l, quantidade: +l.quantidade * f, total: +l.total * f, taxas: tx * f};
+    }).filter(Boolean);
+    const CL = {'Ações': 'Ações', 'BDR': 'BDR', 'FIIs': 'FIIs', 'Tesouro': 'Tesouro', 'Renda fixa': 'Renda fixa'};
+    const ENT = ['Compra', 'Bonificação', 'Desdobro', 'Incorporação', 'Cisão', 'Ajuste', 'Conversão (E)'];
+    const run = (ate) => {
+      const p = {};
+      let conv = 0;
+      lancamentos.filter((l) => l.data <= ate).sort((a, b) => +a.seq - +b.seq).forEach((l) => {
+        if (!CL[l.categoria]) return;
+        const q = +l.quantidade, t = +l.total;
+        const x = p[l.ativo] || (p[l.ativo] = {classe: CL[l.categoria], qtd: 0, custo: 0});
+        if (l.ordem === 'Venda' || l.ordem === 'Conversão (S)') {
+          const c = x.qtd ? x.custo / x.qtd * q : 0;
+          x.qtd -= q; x.custo -= c;
+          if (l.ordem === 'Conversão (S)') conv = c;
+          if (x.qtd < 1e-6) { x.qtd = 0; x.custo = 0; }
+        } else if (l.ordem === 'Restituição de capital') { x.custo -= t; } else if (ENT.includes(l.ordem)) { x.qtd += q; x.custo += l.ordem === 'Conversão (E)' ? conv : t + (+l.taxas || 0); }
+      });
+      return p;
+    };
+    const a = run('2025-12-31'), b = run('9999-12-31');
+    return [...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => {
+      const x = a[k] || {qtd: 0, custo: 0}, y = b[k] || {qtd: 0, custo: 0};
+      const pa = x.qtd > 1e-6 ? x.custo / x.qtd : null, pb = y.qtd > 1e-6 ? y.custo / y.qtd : null;
+      return {ativo: k, classe: (a[k] || b[k]).classe, qtd_2025: x.qtd, pm_2025: pa, custo_2025: x.custo, qtd_atual: y.qtd, pm_atual: pb, custo_atual: y.custo, var_pm: pa && pb ? pb / pa - 1 : null};
+    }).filter((r) => r.qtd_2025 > 1e-6 || r.qtd_atual > 1e-6).sort((r, s) => (r.classe + r.ativo).localeCompare(s.classe + s.ativo));
+  },
+});
+
+const CPSEMLOADER = (n) => ({
+  description: 'Fechamento de cada sexta-feira, por ativo e índice, da aba Semanal da planilha (Google Finance; parte ' + n + ' das colunas), com datas e números do formato brasileiro convertidos.',
+  fn: ({answer}) => {
+    let a = answer;
+    if (typeof a === 'string') a = JSON.parse(a);
+    if (a && a.structuredContent) a = a.structuredContent;
+    const v = (a && a.values) || [];
+    if (v.length < 2) throw new Error('A planilha não devolveu linhas.');
+    const head = v[0], out = [];
+    const num = (s) => { if (s == null || s === '') return null; const x = Number(String(s).replace(/\./g, '').replace(',', '.')); return isNaN(x) ? null : x; };
+    const dia = (s) => {
+      s = String(s);
+      if (s.includes('/')) return s.slice(6, 10) + '-' + s.slice(3, 5) + '-' + s.slice(0, 2);
+      if (/^\d{4}-\d\d-\d\d/.test(s)) return s.slice(0, 10);
+      const n = num(s); if (!n) return null;
+      const d = new Date(Date.UTC(1899, 11, 30) + n * 864e5); return d.toISOString().slice(0, 10);
+    };
+    v.slice(1).forEach((r) => { const w = r[0] ? dia(r[0]) : null; if (!w) return; for (let i = 1; i < head.length; i++) { const p = num(r[i]); if (p != null && p > 0) out.push({semana: w, ativo: head[i], preco: p}); } });
+    return out;
+  },
+});
+dash.loader('precos_semanais_1', CPSEMLOADER(1));
+dash.loader('precos_semanais_2', CPSEMLOADER(2));
+
+dash.calc('rent_mensal', {
+  title: 'Rentabilidade semanal',
+  description: 'Valor da carteira em cada sexta-feira (quantidades pelos lançamentos; preço oficial da B3 quando há, senão Google Finance ajustado, senão a última operação) e retorno pelo método de Dietz modificado, com proventos; índices pelo Google Finance e pelo Banco Central.',
+  inputs: ['lancamentos', 'precos_semanais_1', 'precos_semanais_2', 'precos_b3', 'indices_bcb', 'proventos_b3', 'posicao_corretora', 'renda_fixa_bancos'],
+  fn: (lancamentos, precos_semanais_1, precos_semanais_2, precos_b3, indices_bcb, proventos_b3, posicao_corretora, renda_fixa_bancos) => {
+    const USDC = ['Stocks', 'REITS', 'ETF Exterior'];
+    const ALIAS = {'RAIZ55': 'RAIZ4', 'NTN-B1 dez/2084': 'TESOURO RENDA+ APOSENTADORIA EXTRA 2065', 'NTNB PRINC mai/2029': 'TESOURO IPCA+ 2029', 'LFT mar/2027': 'TESOURO SELIC 2027', 'LFT mar/2031': 'TESOURO SELIC 2031', 'LTN jan/2027': 'TESOURO PREFIXADO 2027', 'LTN jan/2031': 'TESOURO PREFIXADO 2031', 'LTN jan/2032': 'TESOURO PREFIXADO 2032'};
+    const D = (s) => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 864e5;
+    const P = {}, PB = {};
+    precos_semanais_1.concat(precos_semanais_2).forEach((r) => { (P[r.ativo] || (P[r.ativo] = {}))[r.semana] = +r.preco; });
+    precos_b3.forEach((r) => { (PB[r.ativo] || (PB[r.ativo] = {}))[r.semana] = +r.preco; });
+    const L = lancamentos.slice().sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : +a.seq - +b.seq));
+    const W = [...new Set(precos_semanais_1.map((r) => r.semana))].sort().filter((w) => w >= L[0].data);
+    if (!W.length) return [];
+    const wOf = (d) => W.find((w) => w >= d) || W[W.length - 1];
+    let lastFx = null;
+    const fxw = {};
+    W.forEach((w) => { if (P.USDBRL && P.USDBRL[w]) lastFx = P.USDBRL[w]; fxw[w] = lastFx; });
+    // fator de ajuste do Google (desdobramentos), pelo preço negociado na semana
+    const CAND = [1, 2, 3, 4, 5, 8, 10, 20, 30, 1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 8, 1 / 10, 1 / 20, 1 / 30];
+    const seg = {};
+    L.forEach((l) => { if (l.ordem === 'Desdobro') (seg[l.ativo] || (seg[l.ativo] = [])).push(l.data); });
+    const fkey = (a, d) => a + '|' + (seg[a] || []).filter((x) => d >= x).length;
+    const ratios = {}, fator = {};
+    L.forEach((l) => {
+      if (!['Compra', 'Venda'].includes(l.ordem) || !(+l.preco > 0)) return;
+      const g = P[l.ativo] && P[l.ativo][wOf(l.data)];
+      if (g) (ratios[fkey(l.ativo, l.data)] || (ratios[fkey(l.ativo, l.data)] = [])).push(+l.preco / g);
+    });
+    Object.entries(ratios).forEach(([k, rs]) => {
+      const lr = rs.map(Math.log).sort((a, b) => a - b), med = Math.exp(lr[Math.floor(lr.length / 2)]);
+      let best = 1, bd = 9;
+      CAND.forEach((c) => { const d = Math.abs(Math.log(med / c)); if (d < bd) { bd = d; best = c; } });
+      fator[k] = bd < Math.log(1.45) ? best : 1;
+    });
+    // Tesouro e renda fixa: taxa diária implícita entre aportes e saldo atual (ou valor de resgate)
+    const cor = {};
+    posicao_corretora.forEach((r) => { cor[ALIAS[r.ativo] || r.ativo] = r; });
+    const rfb = {};
+    renda_fixa_bancos.forEach((r) => { rfb[r.ativo] = r; });
+    const lots = {}, alvo = {};
+    L.filter((l) => l.categoria === 'Tesouro' || l.categoria === 'Renda fixa').forEach((l) => {
+      if (l.ordem === 'Compra') (lots[l.ativo] || (lots[l.ativo] = [])).push([D(l.data), +l.total]);
+      if (l.ordem === 'Venda') alvo[l.ativo] = [D(l.data), +l.total + (alvo[l.ativo] ? alvo[l.ativo][1] : 0)];
+    });
+    const hoje = D(W[W.length - 1]);
+    Object.keys(lots).forEach((a) => { if (cor[a]) alvo[a] = [hoje, +cor[a].saldo]; else if (rfb[a]) alvo[a] = [hoje, +rfb[a].valor_atual]; });
+    const gT = {};
+    Object.entries(lots).forEach(([a, ls]) => {
+      if (!alvo[a]) { gT[a] = 0; return; }
+      const [T, S] = alvo[a];
+      let lo = -0.002, hi = 0.002;
+      for (let it = 0; it < 60; it++) { const g = (lo + hi) / 2, v = ls.reduce((s, [t, c]) => s + c * Math.pow(1 + g, T - t), 0); if (v > S) hi = g; else lo = g; }
+      gT[a] = (lo + hi) / 2;
+    });
+    const provW = {};
+    proventos_b3.forEach((r) => { if (r.tipo !== 'Restituição de capital') { const w = wOf(r.data); provW[w] = (provW[w] || 0) + +r.valor; } });
+    const bcb = {};
+    indices_bcb.forEach((r) => { bcb[r.mes] = r; });
+    const diaFator = (dd) => {
+      const dt = new Date(dd * 864e5), mes = dt.toISOString().slice(0, 7), nd = new Date(Date.UTC(dt.getUTCFullYear(), dt.getUTCMonth() + 1, 0)).getUTCDate(), b = bcb[mes];
+      const s = b ? Math.pow(1 + +b.selic_pct / 100, 1 / nd) : 1;
+      const ip = b && b.ipca_pct !== '' && b.ipca_pct != null ? Math.pow(1 + +b.ipca_pct / 100, 1 / nd) : 1;
+      return [s, ip];
+    };
+    const m2p = indices_bcb.filter((r) => r.m2 !== '' && r.m2 != null).map((r) => [Date.UTC(+r.mes.slice(0, 4), +r.mes.slice(5, 7), 0) / 864e5, +r.m2]).sort((a, b) => a[0] - b[0]);
+    const m2v = (d) => {
+      if (!m2p.length) return null;
+      if (d <= m2p[0][0]) return m2p[0][1];
+      for (let k = 1; k < m2p.length; k++) if (d <= m2p[k][0]) { const [d0, v0] = m2p[k - 1], [d1, v1] = m2p[k]; return v0 * Math.pow(v1 / v0, (d - d0) / (d1 - d0)); }
+      return m2p[m2p.length - 1][1];
+    };
+    const m2b = m2v(D(W[0]));
+    const q = {}, last = {}, cat = {};
+    let li = 0, Vp = 0, idx = 1, prevW = null;
+    const I = {ibov: 1, spx: 1, usd: 1, selic: 1, ipca: 1, ipca6: 1};
+    const lastP = {};
+    const rel = (code, w, pw) => { const a = P[code] && P[code][w]; if (a) { const b = lastP[code]; lastP[code] = a; return b ? a / b : 1; } return 1; };
+    const out = [];
+    W.forEach((w) => {
+      const fx = fxw[w];
+      let buy = 0, sell = 0;
+      while (li < L.length && L[li].data <= w) {
+        const l = L[li++], qq = +l.quantidade, t = +l.total, tx = +l.taxas || 0, f = USDC.includes(l.categoria) ? fx : 1;
+        cat[l.ativo] = l.categoria;
+        if (['Compra', 'Bonificação', 'Desdobro', 'Incorporação', 'Conversão (E)', 'Ajuste'].includes(l.ordem)) {
+          q[l.ativo] = (q[l.ativo] || 0) + qq;
+          if (l.ordem === 'Compra') buy += (t + tx) * f;
+        } else if (l.ordem === 'Venda' || l.ordem === 'Conversão (S)') {
+          q[l.ativo] = (q[l.ativo] || 0) - qq;
+          if (l.ordem === 'Venda') sell += (t - tx) * f;
+        } else if (l.ordem === 'Restituição de capital') sell += t;
+        if (+l.preco > 0 && (l.ordem === 'Compra' || l.ordem === 'Venda')) last[l.ativo] = +l.preco;
+      }
+      let V = 0;
+      const dw = D(w), isLast = w === W[W.length - 1];
+      Object.entries(q).forEach(([a, n]) => {
+        if (n < 1e-6) return;
+        const c = cat[a];
+        if (c === 'Tesouro' || c === 'Renda fixa') { V += (lots[a] || []).filter(([t]) => t <= dw).reduce((s, [t, cc]) => s + cc * Math.pow(1 + gT[a], dw - t), 0); return; }
+        let p = PB[a] && PB[a][w];
+        if (!p) { const g = P[a] && P[a][w]; if (g) p = g * (fator[fkey(a, w)] || 1); }
+        if (!p && isLast && cor[a]) p = +cor[a].saldo / +cor[a].quantidade;
+        if (!p) p = last[a];
+        if (p != null) V += n * p * (USDC.includes(c) ? fx : 1);
+      });
+      const F = buy - sell, pv = provW[w] || 0, base = Vp + F / 2;
+      const r = prevW === null || Math.abs(base) < 1 ? 0 : (V - Vp - F + pv) / base;
+      idx *= 1 + r;
+      const ri = rel('IBOV', w), ru = rel('USDBRL', w), rs = rel('SPX', w);
+      if (prevW !== null) {
+        I.ibov *= ri; I.usd *= ru; I.spx *= rs * ru;
+        for (let dd = D(prevW) + 1; dd <= dw; dd++) { const [s, ip] = diaFator(dd); I.selic *= s; I.ipca *= ip; I.ipca6 *= ip * Math.pow(1.06, 1 / 365.25); }
+      }
+      out.push({semana: w, valor: V, aporte_liquido: F, proventos: pv, retorno: r, carteira: idx, ibov: I.ibov, ipca: I.ipca, ipca6: I.ipca6, selic: I.selic, spx: I.spx, usd: I.usd, m2: m2b ? m2v(dw) / m2b : null});
+      Vp = V; prevW = w;
+    });
+    return out;
+  },
+});
+
+// ---------- abas ----------
+window.CPshow = (tab) => {
+  CP.tab = tab;
+  document.querySelectorAll('.cp section.page').forEach((s) => { s.hidden = s.id !== tab; });
+  document.querySelectorAll('.cp [data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+  dash.setLink(tab);
+};
+document.querySelectorAll('.cp [data-tab]').forEach((b) => b.addEventListener('click', () => CPshow(b.dataset.tab)));
+const h0 = location.hash.slice(1);
+if (['geral', 'patrimonio', 'rentabilidade', 'proventos', 'transacoes', 'ir'].includes(h0)) CPshow(h0);
+
+// ---------- controles ----------
+const press = (sel, el) => document.querySelectorAll(sel).forEach((x) => x.setAttribute('aria-pressed', String(x === el)));
+document.querySelectorAll('.cp [data-cls]').forEach((b) => b.addEventListener('click', () => { CP.cls = b.dataset.cls; press('.cp [data-cls]', b); dash.draw('pos'); }));
+document.querySelectorAll('#pos-busca').forEach((i) => i.addEventListener('input', () => { CP.q = i.value.trim().toUpperCase(); dash.draw('pos'); }));
+document.querySelectorAll('#pos-table th[data-sort]').forEach((th) => th.addEventListener('click', () => {
+  const k = th.dataset.sort;
+  CP.dir = CP.sort === k ? -CP.dir : (k === 'ativo' || k === 'classe' ? 1 : -1);
+  CP.sort = k;
+  document.querySelectorAll('#pos-table th[data-sort]').forEach((x) => x.setAttribute('aria-sort', x === th ? (CP.dir > 0 ? 'ascending' : 'descending') : 'none'));
+  dash.draw('pos');
+}));
+document.querySelectorAll('#ret-table th[data-rsort]').forEach((th) => th.addEventListener('click', () => {
+  const k = th.dataset.rsort;
+  CP.rd = CP.rs === k ? -CP.rd : (k === 'ativo' || k === 'classe' ? 1 : -1);
+  CP.rs = k;
+  document.querySelectorAll('#ret-table th[data-rsort]').forEach((x) => x.setAttribute('aria-sort', x === th ? (CP.rd > 0 ? 'ascending' : 'descending') : 'none'));
+  dash.draw('ret');
+}));
+const PVDRAW = ['per-label', 'pv-total', 'pv-media', 'pv-tipos', 'pv-bars', 'pv-ativo', 'pv-hist', 'pv-hist-n'];
+document.querySelectorAll('.cp [data-per]').forEach((b) => b.addEventListener('click', () => { CP.per = b.dataset.per; press('.cp [data-per]', b); PVDRAW.forEach((n) => dash.draw(n)); }));
+document.querySelectorAll('.cp [data-tipo]').forEach((b) => b.addEventListener('click', () => { CP.tipo = b.dataset.tipo; press('.cp [data-tipo]', b); dash.draw('pv-hist'); dash.draw('pv-hist-n'); }));
+document.querySelectorAll('#pv-busca').forEach((i) => i.addEventListener('input', () => { CP.pq = i.value.trim().toUpperCase(); dash.draw('pv-hist'); dash.draw('pv-hist-n'); }));
+document.querySelectorAll('#pv-mes-limpa').forEach((b) => b.addEventListener('click', () => { CP.mes = null; b.hidden = true; dash.draw('pv-hist'); dash.draw('pv-hist-n'); }));
+
+// ---------- auxiliares ----------
+window.CPprov = () => {
+  const d = dash.data('proventos_b3');
+  if (d.status !== 'ok') return null;
+  const rows = d.data.filter((r) => r.tipo !== 'Restituição de capital').map((r) => ({...r, valor: +r.valor, quantidade: +r.quantidade, valor_unitario: +r.valor_unitario}));
+  const ref = rows.reduce((m, r) => (r.data > m ? r.data : m), '');
+  const anos = [...new Set(rows.map((r) => r.data.slice(0, 4)))].sort().reverse();
+  if (!CP.ano) CP.ano = anos[0];
+  let ini = '0000', fim = '9999', label = 'Desde 06/2019';
+  if (CP.per === '12M') { ini = (+ref.slice(0, 4) - 1) + ref.slice(4, 7) + '-31'; label = 'De ' + CPF.MES[+ref.slice(5, 7) % 12] + '/' + (+ref.slice(0, 4) - 1) + ' a ' + CPF.MES[+ref.slice(5, 7) - 1] + '/' + ref.slice(0, 4); }
+  if (CP.per === 'YTD') { ini = ref.slice(0, 4) + '-00'; label = 'De janeiro a ' + CPF.MES[+ref.slice(5, 7) - 1] + ' de ' + ref.slice(0, 4); }
+  if (CP.per === 'ANO') { ini = CP.ano + '-00'; fim = CP.ano + '-99'; label = 'Ano de ' + CP.ano; }
+  const sel = rows.filter((r) => r.data > ini && r.data < fim);
+  const meses = new Set();
+  if (CP.per === 'ALL') { const a = rows.reduce((m, r) => (r.data < m ? r.data : m), '9999'); for (let y = +a.slice(0, 4), m = +a.slice(5, 7); y * 12 + m <= +ref.slice(0, 4) * 12 + +ref.slice(5, 7); m++) { if (m > 12) { m = 1; y++; } meses.add(y + '-' + String(m).padStart(2, '0')); } }
+  else if (CP.per === '12M') { let y = +ref.slice(0, 4) - 1, m = +ref.slice(5, 7); for (let i = 0; i < 12; i++) { m++; if (m > 12) { m = 1; y++; } meses.add(y + '-' + String(m).padStart(2, '0')); } }
+  else { const y = CP.per === 'YTD' ? ref.slice(0, 4) : CP.ano, last = y === ref.slice(0, 4) ? +ref.slice(5, 7) : 12; for (let m = 1; m <= last; m++) meses.add(y + '-' + String(m).padStart(2, '0')); }
+  return {rows, sel, ref, anos, label, meses: [...meses]};
+};
+window.CPtip = (el) => { let t = el.querySelector('.tip'); if (!t) { t = document.createElement('div'); t.className = 'tip'; t.hidden = true; el.append(t); } return t; };
+
+// ---------- valores simples ----------
+const one = (name, src, field, fmt, signed) => dash.draw(name, (el) => {
+  const d = dash.data(src);
+  el.classList.remove('up', 'down');
+  if (d.status !== 'ok' || !d.data.length) { el.textContent = '—'; return; }
+  const v = +d.data[0][field];
+  el.textContent = fmt(v);
+  if (signed) el.classList.add(CPF.cls(v));
+});
+one('h-pat', 'resumo', 'patrimonio', CPF.brl);
+one('h-res', 'resumo', 'resultado_pct', CPF.pct, true);
+one('k-pat', 'resumo', 'patrimonio', CPF.brl);
+one('k-n', 'resumo', 'n_ativos', (v) => String(v));
+one('k-custo', 'resumo', 'custo', CPF.brl);
+one('k-res', 'resumo', 'resultado', CPF.brl, true);
+one('k-resp', 'resumo', 'resultado_pct', CPF.pct, true);
+one('k-prov', 'resumo', 'proventos_12m', CPF.brl);
+one('k-provm', 'resumo', 'proventos_media_12m', CPF.brl);
+
+// ---------- alocação ----------
+dash.draw('donut', (el) => {
+  el.replaceChildren();
+  const d = dash.data('alocacao');
+  if (d.status !== 'ok') { el.textContent = '—'; return; }
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', '0 0 160 160').attr('role', 'img').attr('aria-label', 'Alocação por classe');
+  const arcs = d3.pie().sort(null).value((r) => r.saldo)(d.data);
+  svg.append('g').attr('transform', 'translate(80,80)').selectAll('path').data(arcs).join('path')
+    .attr('d', d3.arc().innerRadius(46).outerRadius(74)).attr('fill', (a) => dash.colors[CPF.CORES[a.data.classe]]).attr('stroke', 'var(--color-panel)').attr('stroke-width', 2);
+});
+dash.draw('aloc-mini', (el) => {
+  el.replaceChildren();
+  const d = dash.data('alocacao');
+  if (d.status !== 'ok') return;
+  d.data.forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.classe;
+    const a = tr.insertCell(); const sw = document.createElement('i'); sw.className = 'sw'; sw.style.background = dash.colors[CPF.CORES[r.classe]]; a.append(sw, r.classe);
+    const b = tr.insertCell(); b.className = 'r'; b.textContent = CPF.brl(r.saldo);
+    const c = tr.insertCell(); c.className = 'r'; c.textContent = CPF.pct(r.peso, 1, false);
+  });
+});
+dash.draw('aloc-full', (el) => {
+  el.replaceChildren();
+  const d = dash.data('alocacao');
+  if (d.status !== 'ok') return;
+  d.data.forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.classe;
+    const a = tr.insertCell(); const sw = document.createElement('i'); sw.className = 'sw'; sw.style.background = dash.colors[CPF.CORES[r.classe]]; a.append(sw, r.classe);
+    [[CPF.brl(r.saldo), 'r'], [CPF.pct(r.peso, 1, false), 'r'], [CPF.brl(r.custo), 'r'], [CPF.brl(r.resultado), 'r ' + CPF.cls(r.resultado)], [CPF.pct(r.resultado_pct), 'r ' + CPF.cls(r.resultado_pct)], [String(r.n), '']].forEach(([t, c]) => { const td = tr.insertCell(); td.className = c; td.textContent = t; });
+  });
+});
+
+// ---------- posições ----------
+dash.draw('top10', (el) => {
+  el.replaceChildren();
+  const d = dash.data('posicoes');
+  if (d.status !== 'ok') return;
+  const rows = d.data.filter((r) => r.saldo != null).sort((a, b) => b.saldo - a.saldo).slice(0, 10);
+  const mx = rows.length ? rows[0].peso : 1;
+  rows.forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.ativo;
+    const a = tr.insertCell(); a.textContent = r.ativo;
+    const b = tr.insertCell(); b.className = 'r'; b.textContent = CPF.brl(r.saldo);
+    const c = tr.insertCell(); c.className = 'r ' + CPF.cls(r.resultado_pct); c.textContent = CPF.pct(r.resultado_pct, 1);
+    const w = tr.insertCell(); const bar = document.createElement('i'); bar.className = 'wbar'; bar.style.width = Math.round(60 * r.peso / mx) + 'px'; w.append(bar, CPF.pct(r.peso, 1, false));
+  });
+});
+dash.draw('pos', (el) => {
+  el.replaceChildren();
+  const d = dash.data('posicoes');
+  if (d.status !== 'ok') return;
+  const mx = d3.max(d.data, (r) => r.peso || 0) || 1;
+  const rows = d.data.filter((r) => (!CP.cls || r.classe === CP.cls) && (!CP.q || r.ativo.toUpperCase().includes(CP.q)))
+    .sort((a, b) => { const x = a[CP.sort], y = b[CP.sort]; if (x == null) return 1; if (y == null) return -1; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * CP.dir; });
+  rows.forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.ativo;
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; return td; };
+    const m = r.moeda === 'USD' ? CPF.usd : CPF.brl;
+    cell(r.ativo); const k = tr.insertCell(); const s = document.createElement('span'); s.className = 'pill'; s.textContent = r.classe; k.append(s);
+    cell(CPF.qtd(r.qtd), 'r'); cell(m(r.pm), 'r'); cell(m(r.preco), 'r'); cell(CPF.brl(r.saldo), 'r'); cell(CPF.brl(r.custo_brl), 'r');
+    cell(CPF.brl(r.resultado), 'r ' + (r.resultado == null ? '' : CPF.cls(r.resultado))); cell(CPF.pct(r.resultado_pct), 'r ' + (r.resultado_pct == null ? '' : CPF.cls(r.resultado_pct)));
+    const w = tr.insertCell(); const bar = document.createElement('i'); bar.className = 'wbar'; bar.style.width = Math.round(60 * (r.peso || 0) / mx) + 'px'; w.append(bar, CPF.pct(r.peso, 1, false));
+    cell(r.fonte_preco);
+  });
+});
+
+// ---------- rentabilidade ----------
+dash.draw('ret', (el) => {
+  el.replaceChildren();
+  const d = dash.data('retorno');
+  if (d.status !== 'ok') return;
+  d.data.slice().sort((a, b) => { const x = a[CP.rs], y = b[CP.rs]; if (x == null) return 1; if (y == null) return -1; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * CP.rd; }).forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.ativo;
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(r.ativo); cell(r.classe); cell(CPF.brl(r.custo_brl), 'r'); cell(CPF.brl(r.resultado), 'r ' + CPF.cls(r.resultado)); cell(CPF.brl(r.proventos), 'r');
+    cell(CPF.brl(r.retorno_total), 'r ' + CPF.cls(r.retorno_total)); cell(CPF.pct(r.retorno_total_pct, 1), 'r ' + CPF.cls(r.retorno_total_pct));
+  });
+});
+
+// ---------- proventos ----------
+dash.draw('anos', (sel) => {
+  const P = CPprov();
+  sel.replaceChildren(...(P ? P.anos : []).map((y) => new Option(y, y)));
+  if (P) sel.value = CP.ano;
+  sel.onchange = () => { CP.ano = sel.value; CP.per = 'ANO'; press('.cp [data-per]', document.querySelector('.cp [data-per="ANO"]')); PVDRAW.forEach((n) => dash.draw(n)); };
+});
+dash.draw('per-label', (el) => { const P = CPprov(); el.textContent = P ? P.label : '—'; });
+dash.draw('pv-total', (el) => { const P = CPprov(); el.textContent = P ? CPF.brl(d3.sum(P.sel, (r) => r.valor)) : '—'; });
+dash.draw('pv-media', (el) => { const P = CPprov(); el.textContent = P ? CPF.brl(d3.sum(P.sel, (r) => r.valor) / Math.max(1, P.meses.length)) : '—'; });
+dash.draw('pv-receber', (el) => { const d = dash.data('provisionados'); el.textContent = d.status === 'ok' ? CPF.brl(d3.sum(d.data, (r) => +r.valor_bruto)) : '—'; });
+dash.draw('pv-tipos', (el) => {
+  el.replaceChildren();
+  const P = CPprov();
+  if (!P) { el.textContent = '—'; return; }
+  [['Dividendo', 'Dividendos'], ['JCP', 'JCP'], ['Rendimento', 'Rendimentos de FII']].forEach(([k, n]) => {
+    const s = document.createElement('span'); const b = document.createElement('b'); b.textContent = CPF.brl(d3.sum(P.sel.filter((r) => r.tipo === k), (r) => r.valor));
+    s.append(n + ': ', b); el.append(s);
+  });
+});
+
+window.CPbars = (el, P, clickable) => {
+  el.replaceChildren();
+  if (!P) { el.textContent = '—'; return; }
+  const L = dash.data('lancamentos'), cat = {};
+  if (L.status === 'ok') L.data.forEach((l) => { cat[l.ativo] = l.categoria; });
+  const cls = (a) => (cat[a] === 'FIIs' ? 'FIIs' : 'Ações');
+  const M = P.meses.map((m) => { const rs = P.sel.filter((r) => r.data.slice(0, 7) === m); return {m, rs, a: d3.sum(rs.filter((r) => cls(r.ativo) === 'Ações'), (r) => r.valor), f: d3.sum(rs.filter((r) => cls(r.ativo) === 'FIIs'), (r) => r.valor)}; });
+  const W = el.clientWidth || 600, H = 240, mg = {t: 16, r: 4, b: 22, l: 4};
+  const x = d3.scaleBand(M.map((r) => r.m), [mg.l, W - mg.r]).padding(0.25);
+  const y = d3.scaleLinear([0, (d3.max(M, (r) => r.a + r.f) || 1) * 1.1], [H - mg.b, mg.t]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Proventos por mês');
+  const bw = Math.min(32, x.bandwidth());
+  const g = svg.selectAll('g.m').data(M).join('g').attr('class', 'm').attr('transform', (r) => `translate(${x(r.m) + (x.bandwidth() - bw) / 2},0)`).style('cursor', clickable ? 'pointer' : null);
+  g.append('rect').attr('y', mg.t).attr('width', bw).attr('height', H - mg.b - mg.t).attr('fill', 'transparent');
+  g.append('rect').attr('y', (r) => y(r.a)).attr('width', bw).attr('height', (r) => y(0) - y(r.a)).attr('fill', dash.colors[0]);
+  g.append('rect').attr('y', (r) => y(r.a + r.f)).attr('width', bw).attr('height', (r) => y(r.a) - y(r.a + r.f)).attr('fill', dash.colors[1]).attr('rx', 2);
+  const step = Math.ceil(M.length / Math.max(1, Math.floor(W / 46)));
+  M.forEach((r, i) => { if (i % step === 0 || i === M.length - 1) svg.append('text').attr('x', x(r.m) + x.bandwidth() / 2).attr('y', H - 6).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(CPF.MES[+r.m.slice(5) - 1] + (M.length > 12 ? '/' + r.m.slice(2, 4) : '')); });
+  const tip = CPtip(el);
+  g.on('pointerenter', (ev, r) => {
+    tip.hidden = false; tip.replaceChildren();
+    const h = document.createElement('div'); h.className = 'h'; h.textContent = CPF.MES[+r.m.slice(5) - 1] + '/' + r.m.slice(0, 4) + ' · ' + CPF.brl(r.a + r.f); tip.append(h);
+    const by = d3.rollups(r.rs, (v) => d3.sum(v, (z) => z.valor), (z) => z.ativo).sort((a, b) => b[1] - a[1]);
+    by.forEach(([a, v]) => { const l = document.createElement('div'); l.className = 'l'; const s1 = document.createElement('span'); s1.textContent = a; const s2 = document.createElement('span'); s2.textContent = CPF.brl(v); l.append(s1, s2); tip.append(l); });
+    const tw = tip.offsetWidth, cx = x(r.m);
+    tip.style.left = Math.max(4, Math.min(W - tw - 4, cx > W / 2 ? cx - tw - 8 : cx + x.bandwidth() + 8)) + 'px';
+  }).on('pointerleave', () => { tip.hidden = true; });
+  if (clickable) g.on('click', (ev, r) => {
+    CP.mes = r.m;
+    document.querySelectorAll('#pv-mes-limpa').forEach((b) => { b.hidden = false; }); dash.draw('mes-label');
+    dash.draw('pv-hist'); dash.draw('pv-hist-n');
+    document.querySelectorAll('#pv-hist').forEach((s) => s.scrollIntoView({behavior: 'smooth', block: 'start'}));
+  });
+};
+dash.draw('pv-bars', (el) => CPbars(el, CPprov(), true));
+dash.draw('g-prov', (el) => { const s = CP.per; CP.per = '12M'; const P = CPprov(); CP.per = s; CPbars(el, P, false); });
+
+dash.draw('pv-heat', (el) => {
+  el.replaceChildren();
+  const P = CPprov();
+  if (!P) return;
+  const mx = d3.max(d3.rollups(P.rows, (v) => d3.sum(v, (r) => r.valor), (r) => r.data.slice(0, 7)), (z) => z[1]) || 1;
+  const th = el.createTHead().insertRow();
+  ['Ano', ...CPF.MES, 'Total', 'Média'].forEach((t, i) => { const c = document.createElement('th'); c.textContent = t; c.className = i === 0 ? '' : (i > 12 ? 'r' : 'c'); th.append(c); });
+  const tb = el.createTBody();
+  P.anos.forEach((y) => {
+    const tr = tb.insertRow(); const a = tr.insertCell(); a.textContent = y;
+    let tot = 0, n = 0;
+    for (let m = 1; m <= 12; m++) {
+      const k = y + '-' + String(m).padStart(2, '0'), v = d3.sum(P.rows.filter((r) => r.data.slice(0, 7) === k), (r) => r.valor);
+      const td = tr.insertCell(); td.className = 'c';
+      if (k <= P.ref.slice(0, 7) && k >= '2019-06') { n++; tot += v; td.textContent = v ? CPF.num(v, 0) : '0'; if (v) td.style.background = `color-mix(in srgb, var(--color-ok) ${Math.round(8 + 37 * v / mx)}%, transparent)`; }
+    }
+    const t = tr.insertCell(); t.className = 'r'; t.textContent = CPF.brl(tot);
+    const md = tr.insertCell(); md.className = 'r'; md.textContent = CPF.brl(tot / Math.max(1, n));
+  });
+});
+
+dash.draw('pv-ativo', (el) => {
+  el.replaceChildren();
+  const d = dash.data('prov_ativo'), P = CPprov();
+  if (d.status !== 'ok') return;
+  const per = {};
+  if (P) P.sel.forEach((r) => { per[r.ativo] = (per[r.ativo] || 0) + r.valor; });
+  d.data.slice().sort((a, b) => (per[b.ativo] || 0) - (per[a.ativo] || 0)).forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.ativo;
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(r.ativo); cell(r.classe); cell(CPF.qtd(r.qtd), 'r'); cell(CPF.pct(r.dy, 2, false), 'r'); cell(CPF.pct(r.yoc, 2, false), 'r');
+    cell(r.ultimo_valor == null ? '—' : CPF.brl(r.ultimo_valor), 'r'); cell(CPF.dt(r.ultima_data)); cell(CPF.brl(per[r.ativo] || 0), 'r'); cell(CPF.brl(r.total_acumulado), 'r'); cell(r.a_receber ? CPF.brl(r.a_receber) : '—', 'r');
+  });
+});
+
+window.CPhist = () => {
+  const P = CPprov();
+  if (!P) return null;
+  const base = CP.mes ? P.rows.filter((r) => r.data.slice(0, 7) === CP.mes) : P.sel;
+  return base.filter((r) => (!CP.tipo || r.tipo === CP.tipo) && (!CP.pq || r.ativo.toUpperCase().includes(CP.pq))).sort((a, b) => (a.data < b.data ? 1 : a.data > b.data ? -1 : 0));
+};
+dash.draw('pv-hist', (el) => {
+  el.replaceChildren();
+  const rows = CPhist();
+  if (!rows) return;
+  rows.forEach((r) => {
+    const tr = el.insertRow();
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(CPF.dt(r.data)); cell(r.ativo); cell(r.tipo); cell(CPF.qtd(r.quantidade), 'r'); cell('R$ ' + r.valor_unitario.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 8}), 'r'); cell(CPF.brl(r.valor), 'r');
+  });
+});
+dash.draw('mes-label', (el) => { el.textContent = CP.mes ? CPF.MES[+CP.mes.slice(5) - 1] + '/' + CP.mes.slice(0, 4) : '—'; });
+dash.draw('pv-hist-n', (el) => {
+  const rows = CPhist();
+  el.textContent = rows ? rows.length + ' pagamentos, somando ' + CPF.brl(d3.sum(rows, (r) => r.valor)) + '.' : '—';
+});
+
+// ---------- evolução do patrimônio ----------
+window.CPevol = () => {
+  const d = dash.data('rent_mensal');
+  if (d.status !== 'ok' || !d.data.length) return null;
+  const M = []; let cur = null;
+  d.data.forEach((r) => {
+    const m = r.semana.slice(0, 7);
+    if (!cur || cur.m !== m) { cur = {m, ap: 0, f: 1, v: 0}; M.push(cur); }
+    cur.ap += (r.aporte_liquido || 0) - (r.proventos || 0); cur.f *= 1 + (r.retorno || 0); cur.v = r.valor;
+  });
+  let acA = 0, Vp = 0;
+  M.forEach((x) => { x.rend = x.v - Vp - x.ap; acA += x.ap; x.acA = acA; x.acR = x.v - acA; x.pct = x.f - 1; Vp = x.v; });
+  const per = CP.pper || 'ALL';
+  return per === 'ALL' ? M : M.slice(-(+per));
+};
+document.querySelectorAll('[data-pper]').forEach((b) => b.addEventListener('click', () => {
+  CP.pper = b.dataset.pper;
+  document.querySelectorAll('[data-pper]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  dash.draw('p-evol'); dash.draw('p-evol-t');
+}));
+const CPmes = (m) => m.slice(5, 7) + '/' + m.slice(0, 4);
+dash.draw('p-evol-leg', (el) => {
+  el.replaceChildren();
+  [[dash.colors[0], 'Aporte acumulado'], [dash.colors[1], 'Rendimento acumulado'], ['var(--color-bad)', 'Rendimento negativo']].forEach(([c, t]) => {
+    const s = document.createElement('span'); s.style.marginRight = '12px'; const i = document.createElement('i'); i.className = 'sw'; i.style.background = c; s.append(i, t); el.append(s);
+  });
+});
+dash.draw('p-evol', (el) => {
+  el.replaceChildren();
+  const M = CPevol();
+  if (!M || !M.length) { el.textContent = '—'; return; }
+  const W = el.clientWidth || 600, H = 260, mg = {t: 12, r: 4, b: 22, l: 56};
+  const x = d3.scaleBand(M.map((r) => r.m), [mg.l, W - mg.r]).padding(0.2);
+  const lo = Math.min(0, d3.min(M, (r) => Math.min(r.acA, r.v))), hi = d3.max(M, (r) => Math.max(r.acA, r.v)) || 1;
+  const y = d3.scaleLinear([lo, hi * 1.06], [H - mg.b, mg.t]).nice();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Evolução mensal do patrimônio');
+  y.ticks(4).forEach((t) => {
+    svg.append('line').attr('x1', mg.l).attr('x2', W - mg.r).attr('y1', y(t)).attr('y2', y(t)).attr('stroke', 'var(--color-border-line)');
+    svg.append('text').attr('x', mg.l - 6).attr('y', y(t) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(t >= 1e6 ? 'R$ ' + (t / 1e6).toLocaleString('pt-BR', {maximumFractionDigits: 1}) + ' mi' : 'R$ ' + Math.round(t / 1e3) + ' mil');
+  });
+  const bw = x.bandwidth();
+  const g = svg.selectAll('g.m').data(M).join('g').attr('class', 'm').attr('transform', (r) => `translate(${x(r.m)},0)`);
+  g.append('rect').attr('y', mg.t).attr('width', bw).attr('height', H - mg.b - mg.t).attr('fill', 'transparent');
+  g.append('rect').attr('y', (r) => y(Math.max(0, r.acA))).attr('width', bw).attr('height', (r) => Math.abs(y(0) - y(r.acA))).attr('fill', dash.colors[0]);
+  g.append('rect').attr('y', (r) => y(Math.max(r.acA, r.v))).attr('width', bw).attr('height', (r) => Math.abs(y(r.acA) - y(r.v))).attr('fill', (r) => (r.acR >= 0 ? dash.colors[1] : 'var(--color-bad)'));
+  const step = Math.ceil(M.length / Math.max(1, Math.floor((W - mg.l) / 52)));
+  M.forEach((r, i) => { if (i % step === 0 || i === M.length - 1) svg.append('text').attr('x', x(r.m) + bw / 2).attr('y', H - 6).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(CPmes(r.m).replace('/20', '/')); });
+  const tip = CPtip(el);
+  g.on('pointerenter', (ev, r) => {
+    tip.hidden = false; tip.replaceChildren();
+    const hd = document.createElement('div'); hd.className = 'h'; hd.textContent = CPmes(r.m) + ' · ' + CPF.brl(r.v); tip.append(hd);
+    [['Aporte no mês', CPF.brl(r.ap)], ['Rendimento no mês', CPF.brl(r.rend) + ' (' + CPF.pct(r.pct, 2) + ')'], ['Aporte acumulado', CPF.brl(r.acA)], ['Rendimento acumulado', CPF.brl(r.acR)]].forEach(([a, b]) => {
+      const l = document.createElement('div'); l.className = 'l'; const s1 = document.createElement('span'); s1.textContent = a; const s2 = document.createElement('span'); s2.textContent = b; l.append(s1, s2); tip.append(l);
+    });
+    const tw = tip.offsetWidth, cx = x(r.m);
+    tip.style.left = Math.max(4, Math.min(W - tw - 4, cx > W / 2 ? cx - tw - 8 : cx + bw + 8)) + 'px';
+  }).on('pointerleave', () => { tip.hidden = true; });
+});
+dash.draw('p-evol-t', (el) => {
+  el.replaceChildren();
+  const M = CPevol();
+  if (!M) return;
+  M.slice().reverse().forEach((r) => {
+    const tr = el.insertRow();
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(CPmes(r.m)); cell(CPF.brl(r.v), 'r'); cell(CPF.brl(r.ap), 'r'); cell(CPF.brl(r.rend), 'r ' + CPF.cls(r.rend)); cell(CPF.pct(r.pct, 2), 'r ' + CPF.cls(r.pct)); cell(CPF.brl(r.acA), 'r'); cell(CPF.brl(r.acR), 'r ' + CPF.cls(r.acR));
+  });
+});
+
+// ---------- transações ----------
+document.querySelectorAll('#t-cat').forEach((e) => e.addEventListener('change', () => { CP.tcat = e.value; dash.draw('t-rows'); dash.draw('t-n'); }));
+document.querySelectorAll('#t-ord').forEach((e) => e.addEventListener('change', () => { CP.tord = e.value; dash.draw('t-rows'); dash.draw('t-n'); }));
+document.querySelectorAll('#t-busca').forEach((e) => e.addEventListener('input', () => { CP.tq = e.value.trim().toUpperCase(); dash.draw('t-rows'); dash.draw('t-n'); }));
+window.CPtx = () => {
+  const d = dash.data('lancamentos');
+  if (d.status !== 'ok') return null;
+  return d.data.filter((l) => (!CP.tano || l.data.startsWith(CP.tano)) && (!CP.tcat || l.categoria === CP.tcat) && (!CP.tord || l.ordem === CP.tord) && (!CP.tq || l.ativo.toUpperCase().includes(CP.tq)))
+    .sort((a, b) => +b.seq - +a.seq);
+};
+dash.draw('t-anos', (sel) => {
+  const d = dash.data('lancamentos');
+  const anos = d.status === 'ok' ? [...new Set(d.data.map((l) => l.data.slice(0, 4)))].sort().reverse() : [];
+  sel.replaceChildren(new Option('Todos os anos', ''), ...anos.map((y) => new Option(y, y)));
+  sel.value = CP.tano;
+  sel.onchange = () => { CP.tano = sel.value; dash.draw('t-rows'); dash.draw('t-n'); };
+});
+dash.draw('t-rows', (el) => {
+  el.replaceChildren();
+  const rows = CPtx();
+  if (!rows) return;
+  rows.forEach((l) => {
+    const tr = el.insertRow(); tr.dataset.key = l.seq;
+    const usd = ['Stocks', 'REITS', 'ETF Exterior'].includes(l.categoria);
+    const m = (v) => (usd ? CPF.usd(v) : CPF.brl(v));
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(l.seq); cell(CPF.dt(l.data)); cell(l.categoria); cell(l.ativo); cell(l.ordem, l.ordem === 'Venda' ? 'down' : l.ordem === 'Compra' ? 'up' : ''); cell(l.corretora);
+    cell(CPF.qtd(+l.quantidade), 'r'); cell(m(+l.preco), 'r'); cell(m(+l.total), 'r'); cell(l.fonte);
+  });
+});
+dash.draw('t-n', (el) => {
+  const rows = CPtx();
+  if (!rows) { el.textContent = '—'; return; }
+  const brl = rows.filter((l) => !['Stocks', 'REITS', 'ETF Exterior'].includes(l.categoria));
+  el.textContent = rows.length + ' lançamentos. Em reais: compras de ' + CPF.brl(d3.sum(brl.filter((l) => l.ordem === 'Compra'), (l) => +l.total)) + ' e vendas de ' + CPF.brl(d3.sum(brl.filter((l) => l.ordem === 'Venda'), (l) => +l.total)) + '.';
+});
+
+// ---------- IR ----------
+dash.draw('ir-anos', (sel) => {
+  const d = dash.data('ir_vendas');
+  const anos = d.status === 'ok' ? [...new Set(d.data.map((r) => r.mes.slice(0, 4)))].sort().reverse() : [];
+  if (!CP.iano && anos.length) CP.iano = anos[0];
+  sel.replaceChildren(new Option('Todos os anos', '*'), ...anos.map((y) => new Option(y, y)));
+  sel.value = CP.iano || '*';
+  sel.onchange = () => { CP.iano = sel.value; dash.draw('ir-v'); };
+});
+dash.draw('ir-v', (el) => {
+  el.replaceChildren();
+  const d = dash.data('ir_vendas');
+  if (d.status !== 'ok') return;
+  const lc = dash.data('lancamentos');
+  d.data.filter((r) => !CP.iano || CP.iano === '*' || r.mes.startsWith(CP.iano)).forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.mes; tr.className = 'clk' + (CP.imes === r.mes ? ' on' : '');
+    tr.title = 'Clique para ver as movimentações do mês';
+    tr.onclick = () => { CP.imes = CP.imes === r.mes ? null : r.mes; dash.draw('ir-v'); };
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell((CP.imes === r.mes ? '▾ ' : '▸ ') + r.mes.slice(5, 7) + '/' + r.mes.slice(0, 4)); cell(CPF.brl(r.vendas_acoes), 'r'); cell(r.vendas_acoes ? CPF.brl(r.folga) : '—', 'r ' + (r.folga < 0 ? 'down' : ''));
+    cell(r.vendas_acoes ? CPF.brl(r.ganho_acoes) : '—', 'r ' + (r.vendas_acoes ? CPF.cls(r.ganho_acoes) : ''));
+    const s = tr.insertCell(); const pill = document.createElement('span'); pill.className = 'pill ' + (r.situacao === 'Tributável' ? 'down' : r.situacao === 'Isento' ? 'up' : ''); pill.textContent = r.situacao; s.append(pill);
+    cell(r.vendas_fii ? CPF.brl(r.vendas_fii) : '—', 'r'); cell(r.vendas_fii ? CPF.brl(r.ganho_fii) : '—', 'r ' + (r.vendas_fii ? CPF.cls(r.ganho_fii) : ''));
+    cell(r.vendas_outros ? CPF.brl(r.vendas_outros) : '—', 'r'); cell(r.vendas_outros ? CPF.brl(r.ganho_outros) : '—', 'r ' + (r.vendas_outros ? CPF.cls(r.ganho_outros) : ''));
+    cell(r.vendas_dt ? CPF.brl(r.vendas_dt) : '—', 'r'); cell(r.vendas_dt ? CPF.brl(r.ganho_dt) : '—', 'r ' + (r.vendas_dt ? CPF.cls(r.ganho_dt) : ''));
+    if (CP.imes !== r.mes || lc.status !== 'ok') return;
+    const mv = lc.data.filter((l) => l.data.slice(0, 7) === r.mes).sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : +a.seq - +b.seq));
+    const dt = el.insertRow(); dt.className = 'det-mes'; const td = dt.insertCell(); td.colSpan = 11;
+    const t = document.createElement('table'); const hd = t.createTHead().insertRow();
+    [['Data', ''], ['Ativo', ''], ['Operação', ''], ['Qtd.', 'r'], ['Preço', 'r'], ['Total', 'r'], ['Observação', '']].forEach(([x, c]) => { const th = document.createElement('th'); th.textContent = x; if (c) th.className = c; hd.append(th); });
+    const tb = t.createTBody();
+    mv.forEach((l) => {
+      const rr = tb.insertRow(); const c2 = (x, c) => { const q = rr.insertCell(); if (c) q.className = c; q.textContent = x; };
+      c2(CPF.dt(l.data)); c2(l.ativo); c2(l.ordem); c2(+l.quantidade ? CPF.qtd(+l.quantidade) : '—', 'r'); c2(+l.preco ? CPF.brl(+l.preco) : '—', 'r'); c2(CPF.brl(+l.total), 'r'); c2(l.obs || '');
+    });
+    if (!mv.length) { const rr = tb.insertRow(); const q = rr.insertCell(); q.colSpan = 7; q.textContent = 'Nenhuma movimentação no mês.'; }
+    td.append(t);
+  });
+});
+dash.draw('ir-p', (el) => {
+  el.replaceChildren();
+  const d = dash.data('ir_pm');
+  if (d.status !== 'ok') return;
+  d.data.forEach((r) => {
+    const tr = el.insertRow(); tr.dataset.key = r.ativo;
+    const cell = (t, c) => { const td = tr.insertCell(); if (c) td.className = c; td.textContent = t; };
+    cell(r.ativo); cell(r.classe); cell(r.qtd_2025 ? CPF.qtd(r.qtd_2025) : '—', 'r'); cell(r.pm_2025 == null ? '—' : CPF.brl(r.pm_2025), 'r'); cell(r.qtd_2025 ? CPF.brl(r.custo_2025) : '—', 'r');
+    cell(r.qtd_atual ? CPF.qtd(r.qtd_atual) : '—', 'r'); cell(r.pm_atual == null ? '—' : CPF.brl(r.pm_atual), 'r'); cell(r.qtd_atual ? CPF.brl(r.custo_atual) : '—', 'r');
+    cell(r.var_pm == null ? '—' : CPF.pct(r.var_pm, 1), 'r ' + (r.var_pm == null ? '' : CPF.cls(r.var_pm)));
+  });
+});
+
+// ---------- rentabilidade: gráfico ----------
+document.querySelectorAll('.cp [data-sw]').forEach((el) => { el.style.background = el.dataset.sw === 'm' ? 'var(--color-fg-muted)' : dash.colors[+el.dataset.sw]; });
+window.CPSER = [['carteira', 'Carteira', 0], ['ibov', 'Ibovespa', 1], ['ipca6', 'IPCA + 6%', 2], ['ipca', 'IPCA', 6], ['selic', 'Selic (≈ CDI)', 3], ['spx', 'S&P 500', 4], ['usd', 'Dólar', 5], ['m2', 'M2', 'm']];
+window.CPcor = (i) => (i === 'm' ? 'var(--color-fg-muted)' : dash.colors[i]);
+const RDRAW = () => { dash.draw('r-linha'); dash.draw('r-cmp'); dash.draw('r-sel'); };
+document.querySelectorAll('.cp [data-ser]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ser; if (k === 'carteira') return; CP.on[k] = !CP.on[k]; b.setAttribute('aria-pressed', String(CP.on[k])); RDRAW(); }));
+document.querySelectorAll('.cp [data-rper]').forEach((b) => b.addEventListener('click', () => { CP.rper = b.dataset.rper; CP.sel = null; press('.cp [data-rper]', b); document.querySelectorAll('#r-limpa').forEach((x) => { x.hidden = true; }); RDRAW(); }));
+document.querySelectorAll('.cp [data-moeda]').forEach((b) => b.addEventListener('click', () => {
+  CP.moeda = b.dataset.moeda; press('.cp [data-moeda]', b);
+  document.querySelectorAll('.cp [data-ser="usd"]').forEach((x) => { x.disabled = CP.moeda === 'USD'; x.setAttribute('aria-pressed', String(CP.moeda !== 'USD' && CP.on.usd)); });
+  document.querySelectorAll('.cp [data-ser="ipca"]').forEach((x) => { x.disabled = CP.moeda === 'REAL'; x.setAttribute('aria-pressed', String(CP.moeda !== 'REAL' && CP.on.ipca)); });
+  RDRAW(); dash.draw('r-heat');
+}));
+document.querySelectorAll('#r-limpa').forEach((b) => b.addEventListener('click', () => { CP.sel = null; b.hidden = true; RDRAW(); }));
+window.CPrent = () => {
+  const d = dash.data('rent_mensal');
+  if (d.status !== 'ok' || !d.data.length) return null;
+  const all = d.data, lastW = all[all.length - 1].semana;
+  let ini = '0000';
+  const back = (m) => { const x = new Date(lastW + 'T12:00:00Z'); x.setUTCMonth(x.getUTCMonth() - m); return x.toISOString().slice(0, 10); };
+  if (CP.rper === 'YTD') ini = lastW.slice(0, 4) + '-00';
+  else if (CP.rper !== 'ALL') ini = back(+CP.rper);
+  let i0 = all.findIndex((r) => r.semana >= ini);
+  if (CP.rper === 'YTD' && i0 > 0) i0 -= 1;
+  let rows = all.slice(Math.max(0, i0));
+  const A = CPativo();
+  if (A) { let lp = null; rows = rows.map((r) => { const p = A.px[r.semana]; if (p) lp = p; return {...r, ativo: lp}; }); const f = rows.findIndex((r) => r.ativo); if (f > 0) rows = rows.slice(f); }
+  const base = rows[0];
+  const den = (r) => (CP.moeda === 'USD' ? r.usd : CP.moeda === 'REAL' ? r.ipca : 1);
+  const conv = (r, k, b = base) => (r[k] == null || b[k] == null ? null : (r[k] / den(r)) / (b[k] / den(b)) - 1);
+  const act = CPSER.map((s) => ({k: s[0], n: s[1], c: CPcor(s[2])})).filter((s) => CP.on[s.k] && !(s.k === 'usd' && CP.moeda === 'USD') && !(s.k === 'ipca' && CP.moeda === 'REAL'));
+  if (A) act.push({k: 'ativo', n: A.nome, c: dash.colors[7]});
+  return {rows, conv, act};
+};
+window.CPUSD = ['SLV', 'IAU', 'GDXJ', 'XOP', 'SIL', 'BIL', 'SPTL', 'TMF', 'AMT', 'PLD', 'WFC', 'BPY', 'JPM', 'B', 'INTC', 'AMC', 'META', 'BRK-B', 'HUM', 'AAPL', 'GOOGL', 'SPX'];
+window.CPativos = () => {
+  const a = dash.data('precos_semanais_1'), b = dash.data('precos_semanais_2');
+  if (a.status !== 'ok' || b.status !== 'ok') return null;
+  return a.data.concat(b.data);
+};
+window.CPativo = () => {
+  if (!CP.ativo) return null;
+  const all = CPativos();
+  if (!all) return null;
+  const fx = {}, px = {};
+  all.forEach((r) => { if (r.ativo === 'USDBRL') fx[r.semana] = r.preco; });
+  all.forEach((r) => { if (r.ativo === CP.ativo) px[r.semana] = CPUSD.includes(CP.ativo) ? (fx[r.semana] ? r.preco * fx[r.semana] : null) : r.preco; });
+  Object.keys(px).forEach((k) => { if (px[k] == null) delete px[k]; });
+  return Object.keys(px).length ? {nome: CP.ativo, px} : null;
+};
+document.querySelectorAll('#r-ativo').forEach((i) => i.addEventListener('change', () => { CP.ativo = i.value.trim().toUpperCase(); RDRAW(); dash.draw('r-ativo-msg'); }));
+dash.draw('r-ativos', (el) => {
+  const all = CPativos();
+  el.replaceChildren(...(all ? [...new Set(all.map((r) => r.ativo))].filter((a) => a !== 'USDBRL').sort() : []).map((a) => new Option(a)));
+});
+dash.draw('r-ativo-msg', (el) => {
+  const all = CPativos();
+  el.textContent = !CP.ativo || !all ? '—' : CPativo() ? 'Comparando com ' + CP.ativo : CP.ativo + ' não está na planilha. Peça para eu incluir.';
+});
+window.CPdt = (s) => new Date(s + 'T12:00:00Z');
+dash.draw('r-linha', (el) => {
+  el.replaceChildren();
+  const R = CPrent();
+  if (!R) { el.textContent = '—'; return; }
+  const {rows, conv, act} = R;
+  const W = el.clientWidth || 600, H = 300, m = {t: 10, r: 12, b: 24, l: 10};
+  const ext = d3.extent(rows.flatMap((r) => act.map((s) => conv(r, s.k))).filter((v) => v != null).concat([0]));
+  const y = d3.scaleLinear(ext, [H - m.b, m.t]).nice();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Rentabilidade acumulada');
+  const fmtY = (v) => (v * 100).toLocaleString('pt-BR', {maximumFractionDigits: 0}) + '%';
+  const pr = svg.append('text').attr('font-size', 11).text(y.ticks(5).map(fmtY).sort((a, b) => b.length - a.length)[0]);
+  m.l = pr.node().getComputedTextLength() + 14; pr.remove();
+  const x = d3.scaleUtc(d3.extent(rows, (r) => CPdt(r.semana)), [m.l, W - m.r]);
+  y.ticks(5).forEach((v) => {
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', v === 0 ? 'var(--cds-chart-reference)' : 'var(--cds-chart-grid)').attr('stroke-dasharray', v === 0 ? '4 3' : null);
+    svg.append('text').attr('x', m.l - 8).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(fmtY(v));
+  });
+  const nT = Math.max(2, Math.min(6, Math.floor((W - m.l) / 90))), span = rows.length;
+  x.ticks(nT).forEach((d) => svg.append('text').attr('x', x(d)).attr('y', H - 6).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(span > 60 ? CPF.MES[d.getUTCMonth()] + '/' + String(d.getUTCFullYear()).slice(2) : d.getUTCDate() + ' ' + CPF.MES[d.getUTCMonth()]));
+  if (CP.sel) {
+    const [a, b] = CP.sel.map(CPdt);
+    svg.append('rect').attr('x', x(a)).attr('width', Math.max(1, x(b) - x(a))).attr('y', m.t).attr('height', H - m.b - m.t).attr('fill', 'var(--cds-chart-muted)').attr('fill-opacity', 0.18);
+  }
+  act.slice().reverse().forEach((s) => {
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', s.c).attr('stroke-width', s.k === 'carteira' ? 2.2 : 1.6).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('d', d3.line((r) => x(CPdt(r.semana)), (r) => y(conv(r, s.k))).defined((r) => conv(r, s.k) != null));
+    const lr = rows[rows.length - 1];
+    svg.append('circle').attr('cx', x(CPdt(lr.semana))).attr('cy', y(conv(lr, s.k))).attr('r', 3.5).attr('fill', s.c);
+  });
+  const rule = svg.append('line').attr('y1', m.t).attr('y2', H - m.b).attr('stroke', 'var(--cds-chart-axis)').attr('visibility', 'hidden').style('pointer-events', 'none');
+  const tip = CPtip(el);
+  const bis = d3.bisector((r) => CPdt(r.semana)).center;
+  const brush = d3.brushX().extent([[m.l, m.t], [W - m.r, H - m.b]]).on('end', (ev) => {
+    if (!ev.selection) return;
+    const [x0, x1] = ev.selection, r0 = rows[bis(rows, x.invert(x0))], r1 = rows[bis(rows, x.invert(x1))];
+    if (r0.semana === r1.semana) return;
+    CP.sel = [r0.semana, r1.semana];
+    document.querySelectorAll('#r-limpa').forEach((b) => { b.hidden = false; });
+    RDRAW();
+  });
+  const g = svg.append('g').call(brush);
+  g.select('.overlay').style('cursor', 'crosshair');
+  g.on('pointermove', (ev) => {
+    const [px] = d3.pointer(ev, svg.node()), r = rows[bis(rows, x.invert(px))];
+    rule.attr('x1', x(CPdt(r.semana))).attr('x2', x(CPdt(r.semana))).attr('visibility', 'visible');
+    tip.hidden = false; tip.replaceChildren();
+    const sb = CP.sel ? rows.find((x) => x.semana === CP.sel[0]) : null;
+    const b0 = sb && r.semana >= sb.semana ? sb : rows[0];
+    const h = document.createElement('div'); h.className = 'h'; h.textContent = CPF.dt(r.semana) + ' · acumulado desde ' + CPF.dt(b0.semana); tip.append(h);
+    act.filter((s) => conv(r, s.k, b0) != null).forEach((s) => { const l = document.createElement('div'); l.className = 'l'; const a = document.createElement('span'); const sw = document.createElement('i'); sw.className = 'sw'; sw.style.background = s.c; a.append(sw, s.n); const v = document.createElement('span'); const cv = conv(r, s.k, b0); v.className = CPF.cls(cv); v.textContent = CPF.pct(cv); l.append(a, v); tip.append(l); });
+    const tw = tip.offsetWidth, cx = x(CPdt(r.semana));
+    tip.style.left = Math.max(4, Math.min(W - tw - 4, cx > W / 2 ? cx - tw - 12 : cx + 12)) + 'px';
+  });
+  g.on('pointerleave', () => { tip.hidden = true; rule.attr('visibility', 'hidden'); });
+});
+window.CPsel = () => {
+  const R = CPrent();
+  if (!R) return null;
+  if (!CP.sel) return {a: R.rows[0], z: R.rows[R.rows.length - 1], conv: R.conv};
+  const a = R.rows.find((r) => r.semana === CP.sel[0]), z = R.rows.find((r) => r.semana === CP.sel[1]);
+  return a && z ? {a, z, conv: R.conv} : {a: R.rows[0], z: R.rows[R.rows.length - 1], conv: R.conv};
+};
+dash.draw('r-sel', (el) => {
+  const S = CPsel();
+  el.textContent = S ? (CP.sel ? 'Período selecionado: ' : 'Período: ') + CPF.dt(S.a.semana) + ' a ' + CPF.dt(S.z.semana) : '—';
+});
+dash.draw('r-cmp', (el) => {
+  el.replaceChildren();
+  const S = CPsel();
+  if (!S) { el.textContent = '—'; return; }
+  const {a, z, conv} = S, rc = conv(z, 'carteira', a);
+  const A = CPativo();
+  CPSER.concat(A ? [['ativo', A.nome, 7]] : []).forEach(([k, n, i]) => {
+    if ((k === 'usd' && CP.moeda === 'USD') || (k === 'ipca' && CP.moeda === 'REAL')) return;
+    if (k === 'ativo' && (z.ativo == null || a.ativo == null)) return;
+    const v = conv(z, k, a), box = document.createElement('div');
+    box.style.setProperty('--c', CPcor(i));
+    const e1 = document.createElement('div'); e1.className = 'n'; e1.textContent = n;
+    const e2 = document.createElement('div'); e2.className = 'v ' + CPF.cls(v); e2.textContent = CPF.pct(v, 1);
+    const e3 = document.createElement('div'); e3.className = 'd';
+    e3.textContent = k === 'carteira' ? 'no período' : 'carteira ' + (rc - v >= 0 ? '+' : '') + CPF.num((rc - v) * 100, 1) + ' p.p.';
+    box.append(e1, e2, e3); el.append(box);
+  });
+});
+dash.draw('r-heat', (el) => {
+  el.replaceChildren();
+  const d = dash.data('rent_mensal');
+  if (d.status !== 'ok' || !d.data.length) return;
+  const fim = {};
+  d.data.forEach((r) => { fim[r.semana.slice(0, 7)] = r; });
+  const ms = Object.keys(fim).sort(), by = {};
+  const k = (r, s) => (CP.moeda === 'USD' ? r[s] / r.usd : CP.moeda === 'REAL' ? r[s] / r.ipca : r[s]);
+  ms.forEach((m, i) => { const p = i ? fim[ms[i - 1]] : d.data[0], r = fim[m]; (by[m.slice(0, 4)] || (by[m.slice(0, 4)] = {}))[+m.slice(5, 7)] = k(r, 'carteira') / k(p, 'carteira') - 1; });
+  const th = el.createTHead().insertRow();
+  ['Ano', ...CPF.MES, 'Ano', 'Ibov'].forEach((t, i) => { const c = document.createElement('th'); c.textContent = t; c.className = i === 0 ? '' : i > 12 ? 'r' : 'c'; th.append(c); });
+  const tb = el.createTBody();
+  Object.keys(by).sort().reverse().forEach((y) => {
+    const tr = tb.insertRow(); const a = tr.insertCell(); a.textContent = y;
+    let acc = 1;
+    for (let m = 1; m <= 12; m++) {
+      const td = tr.insertCell(); td.className = 'c'; const v = by[y][m];
+      if (v == null) continue;
+      acc *= 1 + v; td.textContent = CPF.num(v * 100, 1);
+      td.style.background = `color-mix(in srgb, var(${v >= 0 ? '--color-ok' : '--color-bad'}) ${Math.round(6 + 38 * Math.min(1, Math.abs(v) / 0.06))}%, transparent)`;
+    }
+    const e = fim[ms.filter((m) => m.startsWith(y)).pop()], s = fim[ms.filter((m) => m < y).pop()] || d.data[0];
+    const t = tr.insertCell(); t.className = 'r ' + CPF.cls(acc - 1); t.textContent = CPF.pct(acc - 1, 1);
+    const i = tr.insertCell(); i.className = 'r'; i.style.color = 'var(--color-fg-muted)'; i.textContent = CPF.pct(k(e, 'ibov') / k(s, 'ibov') - 1, 1);
+  });
+});
+</script>

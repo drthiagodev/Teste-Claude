@@ -1,6 +1,6 @@
 // Guarda os arquivos do app para abrir sem internet. Cotações sempre vêm da rede.
-const VERSAO = 'carteira-v1';
-const ARQUIVOS = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
+const VERSAO = 'carteira-v2';
+const ARQUIVOS = ['./', 'index.html', 'painel.html', 'dash-shim.js', 'vendor/d3.min.js', 'manifest.webmanifest',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {
