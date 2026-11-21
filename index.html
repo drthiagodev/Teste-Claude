@@ -63,6 +63,7 @@
       background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 5px 12px;
     }
     #dash-root [hidden] { display: none !important; }
+    .barra-app #btn-privado[aria-pressed=true] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
     #dash-root { padding: 16px 16px calc(24px + env(safe-area-inset-bottom)); max-width: 1100px; margin: 0 auto; }
     /* Ajustes de toque para telas pequenas, sem mexer no painel. */
     @media (max-width: 600px) {
@@ -96,6 +97,7 @@
 <body>
   <div class="barra-app">
     <span id="msg" class="msg" role="status"></span>
+    <button id="btn-privado" type="button" aria-pressed="false" title="Ocultar valores em reais e quantidades">Ocultar</button>
     <button id="btn-atualizar" type="button">Atualizar</button>
     <button id="btn-dados" type="button">Dados</button>
   </div>
@@ -148,6 +150,76 @@
       else status('Cotações de ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
     }
 
+    /* ---------- Modo privado: esconde valores em R$/US$ e quantidades, mantém percentuais ---------- */
+    const privado = (() => {
+      const root = document.getElementById('dash-root');
+      const btn = document.getElementById('btn-privado');
+      const originais = new WeakMap(); // nó de texto -> {orig, mask}
+      const DINHEIRO = /(?:[-−]\s?)?(R|US)\$\s?[-−]?\d[\d.,]*(?:\s?(?:mi|mil|bi)\b)?/g;
+      let ligado = false;
+      try { ligado = localStorage.getItem('carteira.privado') === '1'; } catch (e) { /* ignora */ }
+
+      const trocar = (no, novo) => {
+        if (no.nodeValue === novo) return;
+        const reg = originais.get(no);
+        originais.set(no, { orig: reg && reg.mask === no.nodeValue ? reg.orig : no.nodeValue, mask: novo });
+        no.nodeValue = novo;
+      };
+      const textos = (el) => {
+        const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        const out = [];
+        while (w.nextNode()) out.push(w.currentNode);
+        return out;
+      };
+
+      function mascarar(alvo = root) {
+        for (const no of textos(alvo)) {
+          if (no.parentNode && no.parentNode.nodeName === 'SCRIPT') continue;
+          const v = no.nodeValue;
+          if (/\$\s?[-−]?\d/.test(v)) trocar(no, v.replace(DINHEIRO, (_, m) => m + '$ •••'));
+        }
+        // Colunas de quantidade ("Qtd.", "Qtd. hoje"…) revelam o tamanho da posição;
+        // colunas de mês (jan…dez, mapa de proventos) trazem valores sem "R$".
+        const tabelas = alvo.closest && alvo.closest('table') ? [alvo.closest('table')] : alvo.querySelectorAll('table');
+        tabelas.forEach((tab) => {
+          const idx = [...tab.querySelectorAll('thead th')].map((th, i) => (/^(Qtd|jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)\b/.test(th.textContent.trim()) ? i : -1)).filter((i) => i >= 0);
+          if (!idx.length) return;
+          tab.querySelectorAll('tbody tr').forEach((tr) => {
+            idx.forEach((i) => {
+              const td = tr.children[i];
+              if (td) textos(td).forEach((no) => { if (/\d/.test(no.nodeValue)) trocar(no, '•••'); });
+            });
+          });
+        });
+      }
+      function restaurar() {
+        for (const no of textos(root)) {
+          const reg = originais.get(no);
+          if (reg && no.nodeValue === reg.mask) no.nodeValue = reg.orig;
+        }
+      }
+
+      // Mascara na hora (antes de a tela ser pintada), só nos trechos que mudaram.
+      new MutationObserver((registros) => {
+        if (!ligado) return;
+        const alvos = new Set();
+        for (const r of registros) {
+          const el = r.target.nodeType === Node.TEXT_NODE ? r.target.parentNode : r.target;
+          if (el && el.isConnected) alvos.add(el);
+        }
+        alvos.forEach((el) => mascarar(el));
+      }).observe(root, { childList: true, subtree: true, characterData: true });
+
+      function aplicar() {
+        btn.setAttribute('aria-pressed', String(ligado));
+        btn.textContent = ligado ? 'Mostrar' : 'Ocultar';
+        if (ligado) mascarar(); else restaurar();
+        try { localStorage.setItem('carteira.privado', ligado ? '1' : '0'); } catch (e) { /* ignora */ }
+      }
+      btn.onclick = () => { ligado = !ligado; aplicar(); };
+      return { aplicar };
+    })();
+
     document.getElementById('btn-atualizar').onclick = atualizar;
     document.getElementById('btn-dados').onclick = async () => { await infoDados(); dlg.showModal(); };
     document.getElementById('btn-fechar').onclick = () => dlg.close();
@@ -175,6 +247,7 @@
     try {
       const html = await (await fetch('painel.html')).text();
       const pacote = await app.iniciar(html);
+      privado.aplicar();
       if (!pacote) { status('Toque em “Dados” e importe seu pacote.', true); await infoDados(); dlg.showModal(); }
       else atualizar();
     } catch (err) {
